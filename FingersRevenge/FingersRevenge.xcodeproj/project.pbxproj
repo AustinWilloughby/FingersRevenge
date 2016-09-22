@@ -15,6 +15,12 @@
 		3F1427B71D918D450032A1B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427B51D918D450032A1B1 /* Main.storyboard */; };
 		3F1427B91D918D450032A1B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427B81D918D450032A1B1 /* Assets.xcassets */; };
 		3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427BA1D918D450032A1B1 /* LaunchScreen.storyboard */; };
+		3F8216011D946F61000A0491 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8215FD1D946F61000A0491 /* CGFloat+Extensions.swift */; };
+		3F8216021D946F61000A0491 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8215FE1D946F61000A0491 /* CGPoint+Extensions.swift */; };
+		3F8216031D946F61000A0491 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8215FF1D946F61000A0491 /* GameData.swift */; };
+		3F8216041D946F61000A0491 /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216001D946F61000A0491 /* MyUtils.swift */; };
+		3F8216061D947127000A0491 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216051D947127000A0491 /* HomeScene.swift */; };
+		3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216071D9479D0000A0491 /* DiamondSprite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +34,12 @@
 		3F1427B81D918D450032A1B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3F1427BB1D918D450032A1B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F1427BD1D918D450032A1B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3F8215FD1D946F61000A0491 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGFloat+Extensions.swift"; path = "../../../../Downloads/Shooter Start Files/CGFloat+Extensions.swift"; sourceTree = "<group>"; };
+		3F8215FE1D946F61000A0491 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CGPoint+Extensions.swift"; path = "../../../../Downloads/Shooter Start Files/CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		3F8215FF1D946F61000A0491 /* GameData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameData.swift; path = "../../../../Downloads/Shooter Start Files/GameData.swift"; sourceTree = "<group>"; };
+		3F8216001D946F61000A0491 /* MyUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MyUtils.swift; path = "../../../../Downloads/Shooter Start Files/MyUtils.swift"; sourceTree = "<group>"; };
+		3F8216051D947127000A0491 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
+		3F8216071D9479D0000A0491 /* DiamondSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,17 +72,63 @@
 		3F1427AA1D918D450032A1B1 /* FingersRevenge */ = {
 			isa = PBXGroup;
 			children = (
+				3F8215FF1D946F61000A0491 /* GameData.swift */,
 				3F1427AB1D918D450032A1B1 /* AppDelegate.swift */,
+				3F8216001D946F61000A0491 /* MyUtils.swift */,
+				3F8215F81D946E6A000A0491 /* VC */,
+				3F8215F91D946E70000A0491 /* Scene */,
+				3F8215FA1D946E79000A0491 /* Sprite */,
+				3F8215FB1D946E7F000A0491 /* Model */,
+				3F8215FC1D946E86000A0491 /* Lib */,
 				3F1427AD1D918D450032A1B1 /* GameScene.sks */,
 				3F1427AF1D918D450032A1B1 /* Actions.sks */,
-				3F1427B11D918D450032A1B1 /* GameScene.swift */,
-				3F1427B31D918D450032A1B1 /* GameViewController.swift */,
 				3F1427B51D918D450032A1B1 /* Main.storyboard */,
 				3F1427B81D918D450032A1B1 /* Assets.xcassets */,
 				3F1427BA1D918D450032A1B1 /* LaunchScreen.storyboard */,
 				3F1427BD1D918D450032A1B1 /* Info.plist */,
 			);
 			path = FingersRevenge;
+			sourceTree = "<group>";
+		};
+		3F8215F81D946E6A000A0491 /* VC */ = {
+			isa = PBXGroup;
+			children = (
+				3F1427B31D918D450032A1B1 /* GameViewController.swift */,
+			);
+			name = VC;
+			sourceTree = "<group>";
+		};
+		3F8215F91D946E70000A0491 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				3F1427B11D918D450032A1B1 /* GameScene.swift */,
+				3F8216051D947127000A0491 /* HomeScene.swift */,
+			);
+			name = Scene;
+			sourceTree = "<group>";
+		};
+		3F8215FA1D946E79000A0491 /* Sprite */ = {
+			isa = PBXGroup;
+			children = (
+				3F8216071D9479D0000A0491 /* DiamondSprite.swift */,
+			);
+			name = Sprite;
+			sourceTree = "<group>";
+		};
+		3F8215FB1D946E7F000A0491 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		3F8215FC1D946E86000A0491 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				3F8215FE1D946F61000A0491 /* CGPoint+Extensions.swift */,
+				3F8215FD1D946F61000A0491 /* CGFloat+Extensions.swift */,
+			);
+			name = Lib;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,7 +207,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F1427B21D918D450032A1B1 /* GameScene.swift in Sources */,
+				3F8216061D947127000A0491 /* HomeScene.swift in Sources */,
+				3F8216031D946F61000A0491 /* GameData.swift in Sources */,
+				3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */,
+				3F8216021D946F61000A0491 /* CGPoint+Extensions.swift in Sources */,
 				3F1427B41D918D450032A1B1 /* GameViewController.swift in Sources */,
+				3F8216011D946F61000A0491 /* CGFloat+Extensions.swift in Sources */,
+				3F8216041D946F61000A0491 /* MyUtils.swift in Sources */,
 				3F1427AC1D918D450032A1B1 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,6 +343,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -292,6 +357,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -314,6 +380,7 @@
 				3F1427C21D918D450032A1B1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

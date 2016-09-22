@@ -2,7 +2,7 @@
 //  GameScene.swift
 //  FingersRevenge
 //
-//  Created by student on 9/20/16.
+//  Created by Austin Willoughby on 9/22/16
 //  Copyright © 2016 Austin Willoughby / Peter Lockhart. All rights reserved.
 //
 
@@ -10,80 +10,89 @@ import SpriteKit
 import GameplayKit
 
 class GameScene: SKScene {
+    var levelNum:Int
+    var levelScore:Int = 0
+    var totalScore:Int
+    let sceneManager:GameViewController
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    var playableRect = CGRect.zero
+    var totalSprites = 0
     
-    override func didMove(to view: SKView) {
+    let levelLabel = SKLabelNode(fontNamed: "Futura")
+    let scoreLabel = SKLabelNode(fontNamed: "Futura")
+    let otherLabel = SKLabelNode(fontNamed: "Futura")
+    
+    // MARK: - Initialization -
+    init(size: CGSize, scaleMode:SKSceneScaleMode, levelNum:Int, totalScore:Int, sceneManager:GameViewController){
+        self.levelNum = levelNum
+        self.totalScore = totalScore
+        self.sceneManager = sceneManager
+        super.init(size: size)
+        self.scaleMode = scaleMode
+    }
+    
+    required init?(coder aDecoder: NSCoder){
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle -
+    override func didMove(to view: SKView){
+        setupUI()
+    }
+    
+    
+    
+    deinit{
+        // TODO: Clean up resources, timers, listeners, etc . . .
+    }
+    
+    // MARK: - Helpers -
+    private func setupUI(){
+        playableRect = getPlayableRectPhonePortrait(size: size)
+        let fontSize = GameData.hud.fontSize
+        let fontColor = GameData.hud.fontColorWhite
+        let marginH = GameData.hud.marginH
+        let marginV = GameData.hud.marginV
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        backgroundColor = GameData.hud.backgroundColor
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        levelLabel.fontColor = fontColor
+        levelLabel.fontSize = fontSize
+        levelLabel.position = CGPoint(x: marginH,y: playableRect.maxY - marginV)
+        levelLabel.verticalAlignmentMode = .top
+        levelLabel.horizontalAlignmentMode = .left
+        levelLabel.text = "Level: \(levelNum)"
+        addChild(levelLabel)
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(M_PI), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
-    }
-    
-    
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
+        scoreLabel.fontColor = fontColor
+        scoreLabel.fontSize = fontSize
         
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        scoreLabel.verticalAlignmentMode = .top
+        scoreLabel.horizontalAlignmentMode = .left
+        // next 2 lines calculate the max width of scoreLabel
+        scoreLabel.text = "Score: 000"
+        let scoreLabelWidth = scoreLabel.frame.size.width
+        
+        // here is the starting text of scoreLabel
+        scoreLabel.text = "Score: \(levelScore)"
+        
+        scoreLabel.position = CGPoint(x: playableRect.maxX - scoreLabelWidth - marginH,y: playableRect.maxY - marginV)
+        addChild(scoreLabel)
+        
+        otherLabel.fontColor = fontColor
+        otherLabel.fontSize = fontSize
+        otherLabel.position = CGPoint(x: marginH, y: playableRect.minY + marginV)
+        otherLabel.verticalAlignmentMode = .bottom
+        otherLabel.horizontalAlignmentMode = .left
+        otherLabel.text = "Num Sprites: 0"
+        addChild(otherLabel)
+        
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
-    }
+    // MARK: - Events -
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+    // MARK: - Game Loop -
+    override func update(_ currentTime: TimeInterval){
+        
     }
 }
