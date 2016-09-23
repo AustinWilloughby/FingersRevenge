@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, UIGestureRecognizerDelegate {
     // MARK: - ivars -
     var levelNum:Int
     var totalScore:Int
@@ -18,15 +18,17 @@ class GameScene: SKScene {
     var playableRect = CGRect.zero
     var totalSprites = 0
     
-    let levelLabel = SKLabelNode(fontNamed: "Futura")
-    let scoreLabel = SKLabelNode(fontNamed: "Futura")
-    let otherLabel = SKLabelNode(fontNamed: "Futura")
+    var playerSprite = DiamondSprite(size: CGSize(width: 100, height: 100), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
+    let levelLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
+    let scoreLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     var spritesMoving = false
     
     var tapCount = 0 // 3 taps and the game is over!
+    
+    var previousPanX:CGFloat = 0.0
     
     // MARK: - ivars with observers -
     var levelScore:Int = 0{
@@ -44,6 +46,11 @@ class GameScene: SKScene {
         self.sceneManager = sceneManager
         super.init(size: size)
         self.scaleMode = scaleMode
+        
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
+        pan.delegate = self
+        view?.addGestureRecognizer(pan)
     }
     
     required init?(coder aDecoder: NSCoder){
@@ -54,6 +61,14 @@ class GameScene: SKScene {
     override func didMove(to view: SKView){
         setupUI()
         makeSprites(howMany: 10)
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
+        pan.delegate = self
+        view.addGestureRecognizer(pan)
+        
+        playerSprite.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
+        addChild(playerSprite)
+        
         unpauseSprites()
     }
     
@@ -96,19 +111,10 @@ class GameScene: SKScene {
         scoreLabel.position = CGPoint(x: playableRect.maxX - scoreLabelWidth - marginH,y: playableRect.maxY - marginV)
         addChild(scoreLabel)
         
-        otherLabel.fontColor = fontColor
-        otherLabel.fontSize = fontSize
-        otherLabel.position = CGPoint(x: marginH, y: playableRect.minY + marginV)
-        otherLabel.verticalAlignmentMode = .bottom
-        otherLabel.horizontalAlignmentMode = .left
-        otherLabel.text = "Num Sprites: 0"
-        addChild(otherLabel)
-        
     }
     
     func makeSprites(howMany:Int){
         totalSprites = totalSprites + howMany
-        otherLabel.text = "Num Sprites: \(totalSprites)"
         var s:DiamondSprite
         for _ in 0...howMany-1{
             s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
@@ -166,17 +172,37 @@ class GameScene: SKScene {
     
     // MARK: - Events -
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-        tapCount = tapCount + 1
-        if tapCount < 3{
-            return
-        }
+//        
+//        tapCount = tapCount + 1
+//        if tapCount < 3{
+//            return
+//        }
+//        
+//        if levelNum < GameData.maxLevel{
+//            let results = LevelResults(levelNum: levelNum, levelScore: levelScore, totalScore: totalScore, msg: "You finished level \(levelNum)!")
+//            sceneManager.loadLevelFinishScene(results: results)
+//        } else{
+//            let results = LevelResults(levelNum: levelNum, levelScore: levelScore, totalScore: totalScore, msg: "You finished level \(levelNum)!")
+//            sceneManager.loadGameOverScene(results: results)
+//        }
+    }
+    
+    
+    // MARK: - Actions -
+    func panDetected(_ sender:UIPanGestureRecognizer) {
+        // retrieve pan movement along the x-axis of the view since the gesture began
+        let currentPanX = sender.translation(in: view!).x
+        print("currentPanX since gesture began = \(currentPanX)")
         
-        if levelNum < GameData.maxLevel{
-            let results = LevelResults(levelNum: levelNum, levelScore: levelScore, totalScore: totalScore, msg: "You finished level \(levelNum)!")
-            sceneManager.loadLevelFinishScene(results: results)
-        } else{
-            let results = LevelResults(levelNum: levelNum, levelScore: levelScore, totalScore: totalScore, msg: "You finished level \(levelNum)!")
-            sceneManager.loadGameOverScene(results: results)
+        // calculate deltaX since last measurement
+        let deltaX = currentPanX - previousPanX
+        playerSprite.position = CGPoint(x: playerSprite.position.x + (deltaX * 2), y: playerSprite.position.y)
+        
+        // if the gesture has completed
+        if sender.state == .ended {
+            previousPanX = 0
+        } else {
+            previousPanX = currentPanX
         }
     }
     

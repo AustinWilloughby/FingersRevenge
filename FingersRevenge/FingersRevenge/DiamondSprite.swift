@@ -34,7 +34,7 @@ class DiamondSprite: SKShapeNode{
         pathToDraw.closeSubpath()
         path = pathToDraw
         self.strokeColor = strokeColor
-        self.lineWidth = lineWidth
+        self.lineWidth = lineWeight
         self.fillColor = fillColor
     }
     

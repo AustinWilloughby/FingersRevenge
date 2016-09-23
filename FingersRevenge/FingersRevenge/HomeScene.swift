@@ -26,16 +26,16 @@ class HomeScene: SKScene {
     
     override func didMove(to view: SKView) {
         backgroundColor = GameData.scene.backgroundColor
-        let label = SKLabelNode(fontNamed: GameData.font.mainFont)
-        let label2 = SKLabelNode(fontNamed: GameData.font.mainFont)
-        label.text = "Diamond"
-        label2.text = "Blast"
+        let label = SKLabelNode(fontNamed: "AvenirNextCondensed-DemiBoldItalic")
+        let label2 = SKLabelNode(fontNamed: "AvenirNextCondensed-HeavyItalic")
+        label.text = "Fingers"
+        label2.text = "Revenge"
         
         label.fontSize = 200
-        label2.fontSize = 200
+        label2.fontSize = 250
         
-        label.position = CGPoint(x:size.width/2, y:size.height/2 + 400)
-        label2.position = CGPoint(x:size.width/2, y:size.height/2 - 200)
+        label.position = CGPoint(x:size.width/2, y:size.height/2 + 300)
+        label2.position = CGPoint(x:size.width/2, y:size.height/2 + 100)
         
         label.zPosition = 1
         label2.zPosition = 1
@@ -45,11 +45,18 @@ class HomeScene: SKScene {
         // label3 was an image - I'll let you do that on your own
         
         let label4 = SKLabelNode(fontNamed: GameData.font.mainFont)
-        label4.text = "Tap to continue"
-        label4.fontColor = UIColor.red
+        label4.text = "Place Finger below to Begin"
+        label4.fontColor = UIColor.lightGray
         label4.fontSize = 70
-        label4.position = CGPoint(x:size.width/2, y:size.height/2 - 400)
+        label4.position = CGPoint(x:size.width/2, y:size.height/2 - 500)
         addChild(label4)
+        
+        var s:DiamondSprite;
+        s = DiamondSprite(size: CGSize(width: 100, height: 100), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
+        s.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
+        addChild(s)
+        
+        
     }
     
     override func touchesBegan(_ touchces: Set<UITouch>, with event: UIEvent?){
