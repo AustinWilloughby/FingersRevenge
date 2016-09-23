@@ -17,7 +17,7 @@ class DiamondSprite: SKShapeNode{
     var hit:Bool = false
     
     // MARK: - Initialization
-    init(size:CGSize, lineWeight:CGFloat, strokeColr:SKColor, fillColor:SKColor){
+    init(size:CGSize, lineWeight:CGFloat, strokeColor:SKColor, fillColor:SKColor){
         super.init()
         let halfHeight = size.height/2.0
         let halfWidth = size.width/2.0
