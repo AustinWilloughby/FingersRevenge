@@ -19,13 +19,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     var playableRect = CGRect.zero
     var totalSprites = 0
     
-    var playerSprite = DiamondSprite(size: CGSize(width: 100, height: 100), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
+    var playerSprite = PlayerSprite(size: CGSize(width: 100, height: 100), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
     let levelLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     let scoreLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     var spritesMoving = false
+    
+    //obstacl spawning ivars
+    var obstacleInterval = 1.5
+    var obstacleSpawnTimer = 1.5
     
     var tapCount = 0 // 3 taps and the game is over!
     
@@ -68,11 +72,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         view.addGestureRecognizer(pan)
         
         playerSprite.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
+        playerSprite.name = "player"
         addChild(playerSprite)
         
-        unpauseSprites()
-        //run(SKAction.repeatForever(SKAction.sequence([SKAction.run(addObstacle), SKAction.wait(forDuration: 1.5)])))
-        addObstacle()
+        //unpauseSprites()
     }
     
     
@@ -119,10 +122,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     //adds an obstacle to the top of the screen
     func addObstacle(){
         var o:RectangleSprite
-        o = RectangleSprite(size: CGSize(width: 100, height: 40), fillColor:SKColor.green)
+        o = RectangleSprite(size: CGSize(width: 300, height: 80), fillColor:SKColor.green)
         o.name = "obstacle"
         let x = arc4random_uniform(UInt32(playableRect.width))
-        let y = playableRect.height + 20
+        let y = playableRect.height
         o.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
         addChild(o)
     }
@@ -207,25 +210,44 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
 //            let results = LevelResults(levelNum: levelNum, levelScore: levelScore, totalScore: totalScore, msg: "You finished level \(levelNum)!")
 //            sceneManager.loadGameOverScene(results: results)
 //        }
+        if let touch = touches.first{
+            let positionInScene = touch.location(in: self)
+            let touchedNodes = self.nodes(at: positionInScene)
+            for sprite in touchedNodes{
+                if let name = sprite.name{
+                    if name == "player"
+                    {
+                        print("touched")
+                        spritesMoving = true;
+                    }
+                }
+            }
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
+        if let touch = touches.first{
+            spritesMoving = false;
+        }
     }
     
     
     // MARK: - Actions -
     func panDetected(_ sender:UIPanGestureRecognizer) {
-        // retrieve pan movement along the x-axis of the view since the gesture began
-        let currentPanX = sender.translation(in: view!).x
-        print("currentPanX since gesture began = \(currentPanX)")
-        
-        // calculate deltaX since last measurement
-        let deltaX = currentPanX - previousPanX
-        playerSprite.position = CGPoint(x: playerSprite.position.x + (deltaX * 2), y: playerSprite.position.y)
-        
-        // if the gesture has completed
-        if sender.state == .ended {
-            previousPanX = 0
-        } else {
-            previousPanX = currentPanX
-        }
+//        // retrieve pan movement along the x-axis of the view since the gesture began
+//        let currentPanX = sender.translation(in: view!).x
+//        print("currentPanX since gesture began = \(currentPanX)")
+//        
+//        // calculate deltaX since last measurement
+//        let deltaX = currentPanX - previousPanX
+//        playerSprite.position = CGPoint(x: playerSprite.position.x + (deltaX * 2), y: playerSprite.position.y)
+//        
+//        // if the gesture has completed
+//        if sender.state == .ended {
+//            previousPanX = 0
+//        } else {
+//            previousPanX = currentPanX
+//        }
     }
     
     
@@ -233,5 +255,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     override func update(_ currentTime: TimeInterval){
         calculateDeltaTime(currentTime: currentTime)
         moveSprites(dt: CGFloat(dt))
+        obstacleSpawnTimer = obstacleSpawnTimer - dt
+        if(obstacleSpawnTimer <= 0)
+        {
+            addObstacle()
+            obstacleSpawnTimer = obstacleInterval
+        }
     }
 }

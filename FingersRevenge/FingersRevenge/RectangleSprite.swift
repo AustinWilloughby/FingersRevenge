@@ -12,7 +12,7 @@ import SpriteKit
 class RectangleSprite : SKShapeNode{
     var fwd:CGPoint = CGPoint(x:0.0, y:-1.0) // Down
     var velocity:CGPoint = CGPoint.zero // speed with a direction
-    var delta:CGFloat = 300.0 //Magnitude of vector per second
+    var delta:CGFloat = 600.0 //Magnitude of vector per second
     var health:CGFloat = 3.0//amount of times to be hit until destroyed
     
     let colorArrayIndex = 2;//which color to draw
@@ -39,6 +39,6 @@ class RectangleSprite : SKShapeNode{
     func update(dt: CGFloat)
     {
         velocity = fwd * delta
-        position = position + fwd * dt
+        position = position + velocity * dt 
     }
 }
