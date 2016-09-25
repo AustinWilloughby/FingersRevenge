@@ -22,6 +22,7 @@
 		3F5AC85F1D94A19600835E0F /* LevelFinishScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC85E1D94A19600835E0F /* LevelFinishScene.swift */; };
 		3F5AC8611D94A1AC00835E0F /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8601D94A1AC00835E0F /* GameOverScene.swift */; };
 		3F5AC8631D94A24700835E0F /* LevelResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8621D94A24700835E0F /* LevelResults.swift */; };
+		3F64F89C1D985C470035C17A /* RectangleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F64F89B1D985C470035C17A /* RectangleSprite.swift */; };
 		3F8216061D947127000A0491 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216051D947127000A0491 /* HomeScene.swift */; };
 		3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216071D9479D0000A0491 /* DiamondSprite.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +45,7 @@
 		3F5AC85E1D94A19600835E0F /* LevelFinishScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelFinishScene.swift; sourceTree = "<group>"; };
 		3F5AC8601D94A1AC00835E0F /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		3F5AC8621D94A24700835E0F /* LevelResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelResults.swift; sourceTree = "<group>"; };
+		3F64F89B1D985C470035C17A /* RectangleSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleSprite.swift; sourceTree = "<group>"; };
 		3F8216051D947127000A0491 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		3F8216071D9479D0000A0491 /* DiamondSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				3F8216071D9479D0000A0491 /* DiamondSprite.swift */,
+				3F64F89B1D985C470035C17A /* RectangleSprite.swift */,
 			);
 			name = Sprite;
 			sourceTree = "<group>";
@@ -219,6 +222,7 @@
 				3F5AC85B1D9498F800835E0F /* CGPoint+Extensions.swift in Sources */,
 				3F5AC8611D94A1AC00835E0F /* GameOverScene.swift in Sources */,
 				3F1427B21D918D450032A1B1 /* GameScene.swift in Sources */,
+				3F64F89C1D985C470035C17A /* RectangleSprite.swift in Sources */,
 				3F8216061D947127000A0491 /* HomeScene.swift in Sources */,
 				3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */,
 				3F5AC85D1D9498F800835E0F /* MyUtils.swift in Sources */,

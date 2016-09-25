@@ -6,6 +6,7 @@
 //  Copyright © 2016 Austin Willoughby / Peter Lockhart. All rights reserved.
 //
 
+import Foundation
 import SpriteKit
 import GameplayKit
 
@@ -60,7 +61,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     // MARK: - Lifecycle -
     override func didMove(to view: SKView){
         setupUI()
-        makeSprites(howMany: 10)
+        makeSprites(howMany: 1)
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
         pan.delegate = self
@@ -70,6 +71,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         addChild(playerSprite)
         
         unpauseSprites()
+        //run(SKAction.repeatForever(SKAction.sequence([SKAction.run(addObstacle), SKAction.wait(forDuration: 1.5)])))
+        addObstacle()
     }
     
     
@@ -113,15 +116,28 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         
     }
     
+    //adds an obstacle to the top of the screen
+    func addObstacle(){
+        var o:RectangleSprite
+        o = RectangleSprite(size: CGSize(width: 100, height: 40), fillColor:SKColor.green)
+        o.name = "obstacle"
+        let x = arc4random_uniform(UInt32(playableRect.width))
+        let y = playableRect.height + 20
+        o.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
+        addChild(o)
+    }
+    
     func makeSprites(howMany:Int){
         totalSprites = totalSprites + howMany
         var s:DiamondSprite
-        for _ in 0...howMany-1{
-            s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
-            s.name = "diamond"
-            s.position = randomCGPointInRect(playableRect, margin: 300)
-            s.fwd = CGPoint.randomUnitVector()
-            addChild(s)
+        if howMany > 0{
+            for _ in 0...howMany-1{
+                s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
+                s.name = "diamond"
+                s.position = randomCGPointInRect(playableRect, margin: 300)
+                s.fwd = CGPoint.randomUnitVector()
+                addChild(s)
+            }
         }
     }
     
@@ -158,6 +174,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
                     s.update(dt: dt) // make an extra bounce
                     self.levelScore = self.levelScore + 1 // lamest game ever - "bounce n win"
                 }
+            })
+            
+            enumerateChildNodes(withName: "obstacle", using:{
+                node, stop in
+                let o = node as! RectangleSprite
+                o.update(dt: dt)
             })
         }
     }
