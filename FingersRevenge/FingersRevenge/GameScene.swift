@@ -248,9 +248,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     }
     
     func tapDetected(_ sender:UITapGestureRecognizer){
-        if sender.state == .ended{
-            print("poop")
-        }
+        print("poop")
     }
     
     
