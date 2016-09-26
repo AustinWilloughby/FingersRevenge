@@ -18,7 +18,7 @@ struct GameData{
     }
     
     struct hud{
-        static let backgroundColor = SKColor.red
+        static let backgroundColor = SKColor.black
         static let fontSize = CGFloat(64.0)
         static let fontColorWhite = SKColor(red: 0.90, green: 0.90, blue: 0.90, alpha: 1.0)
         static let marginV = CGFloat(12.0)
@@ -37,5 +37,13 @@ struct GameData{
     struct scene {
         static let backgroundColor = SKColor.darkGray
     }
+}
+
+struct CollisonMask {
+    static let none         : UInt32 = 0
+    static let all          : UInt32 = UInt32.max
+    static let player       : UInt32 = 0b1
+    static let wall         : UInt32 = 0b10
+    static let projectile   : UInt32 = 0b100
 }
 

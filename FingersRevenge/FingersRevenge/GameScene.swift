@@ -19,13 +19,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     var playableRect = CGRect.zero
     var totalSprites = 0
     
-    var playerSprite = PlayerSprite(size: CGSize(width: 100, height: 100), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
+    var playerSprite = PlayerSprite(size: CGSize(width: 200, height: 200), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
     let levelLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     let scoreLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
-    var spritesMoving = false
+    var spritesMoving = true
     
     //obstacl spawning ivars
     var obstacleInterval = 1.5
@@ -34,7 +34,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     var tapCount = 0 // 3 taps and the game is over!
     
     var previousPanX:CGFloat = 0.0
-    var playerTouch:UITouch!
+    var playerTouch:UITouch?
     
     // MARK: - ivars with observers -
     var levelScore:Int = 0{
@@ -54,9 +54,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         self.scaleMode = scaleMode
         
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
-        pan.delegate = self
-        view?.addGestureRecognizer(pan)
+//        let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
+//        pan.delegate = self
+//        view?.addGestureRecognizer(pan)
+//        
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
+//        tap.delegate = self
+//        tap.numberOfTapsRequired = 1
+//        view?.addGestureRecognizer(tap)
     }
     
     required init?(coder aDecoder: NSCoder){
@@ -71,6 +76,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
         pan.delegate = self
         view.addGestureRecognizer(pan)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
+        tap.delegate = self
+        view.addGestureRecognizer(tap)
         
         playerSprite.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
         playerSprite.name = "player"
@@ -196,47 +205,20 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         run(unpauseAction)
     }
     
-    // MARK: - Events -
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-        if let touch = touches.first{
-            let positionInScene = touch.location(in: self)
-            let touchedNodes = self.nodes(at: positionInScene)
-            for sprite in touchedNodes{
-                if let name = sprite.name{
-                    if name == "player"
-                    {
-                        print("touched")
-                        //spritesMoving = true
-                    }
-                }
-            }
-        }
-    }
-    
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
+    func fireProjectile(target: CGPoint, shooter: CGPoint){
         
     }
     
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-            }
-    
+    // MARK: - Events -
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if(playerSprite.canMove)
+        {
+        }
+    }
     
     // MARK: - Actions -
     func panDetected(_ sender:UIPanGestureRecognizer) {
-//        // retrieve pan movement along the x-axis of the view since the gesture began
-//        let currentPanX = sender.translation(in: view!).x
-//        print("currentPanX since gesture began = \(currentPanX)")
-//        
-//        // calculate deltaX since last measurement
-//        let deltaX = currentPanX - previousPanX
-//        playerSprite.position = CGPoint(x: playerSprite.position.x + (deltaX * 2), y: playerSprite.position.y)
-//        
-//        // if the gesture has completed
-//        if sender.state == .ended {
-//            previousPanX = 0
-//        } else {
-//            previousPanX = currentPanX
-//        }
+        sender.maximumNumberOfTouches = 1; // programming
         if sender.state == .began{
             var touchLocation = sender.location(in: sender.view)
             touchLocation = self.convertPoint(fromView: touchLocation)
@@ -246,7 +228,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
                     if name == "player"
                     {
                         playerSprite.canMove = true
-                        spritesMoving = true
+                        //spritesMoving = true
                     }
                 }
             }
@@ -257,15 +239,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
                 var touchLocation = sender.location(in: sender.view)
                 touchLocation = self.convertPoint(fromView: touchLocation)
                 playerSprite.position = touchLocation
-//                var translation = sender.translation(in: sender.view)
-//                translation = CGPoint(x: translation.x, y: -translation.y)
-//                playerSprite.position = CGPoint(x: playerSprite.position.x + translation.x, y: playerSprite.position.y + translation.y)
-//                sender.setTranslation(CGPoint(x: 0, y:0), in: sender.view)
             }
         }
         if(sender.state == .ended){
-            spritesMoving = false
+            //spritesMoving = false
             playerSprite.canMove = false
+        }
+    }
+    
+    func tapDetected(_ sender:UITapGestureRecognizer){
+        if sender.state == .ended{
+            print("poop")
         }
     }
     
