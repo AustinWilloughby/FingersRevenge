@@ -14,11 +14,13 @@ class RectangleSprite : SKShapeNode{
     var velocity:CGPoint = CGPoint.zero // speed with a direction
     var delta:CGFloat = 600.0 //Magnitude of vector per second
     var health:CGFloat = 3.0//amount of times to be hit until destroyed
+    let size:CGSize
     
     let colorArrayIndex = 2;//which color to draw
     
     // MARK: - Initialization
     init(size:CGSize, fillColor:SKColor){
+        self.size = size
         super.init()
         
         //drawing the rectangle with a centered origin.
@@ -39,6 +41,9 @@ class RectangleSprite : SKShapeNode{
     func update(dt: CGFloat)
     {
         velocity = fwd * delta
-        position = position + velocity * dt 
+        position = position + velocity * dt
+        if(position.y < -size.height/2){
+            self.removeFromParent()
+        }
     }
 }

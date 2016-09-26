@@ -34,6 +34,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     var tapCount = 0 // 3 taps and the game is over!
     
     var previousPanX:CGFloat = 0.0
+    var playerTouch:UITouch!
     
     // MARK: - ivars with observers -
     var levelScore:Int = 0{
@@ -197,19 +198,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     // MARK: - Events -
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-//        
-//        tapCount = tapCount + 1
-//        if tapCount < 3{
-//            return
-//        }
-//        
-//        if levelNum < GameData.maxLevel{
-//            let results = LevelResults(levelNum: levelNum, levelScore: levelScore, totalScore: totalScore, msg: "You finished level \(levelNum)!")
-//            sceneManager.loadLevelFinishScene(results: results)
-//        } else{
-//            let results = LevelResults(levelNum: levelNum, levelScore: levelScore, totalScore: totalScore, msg: "You finished level \(levelNum)!")
-//            sceneManager.loadGameOverScene(results: results)
-//        }
         if let touch = touches.first{
             let positionInScene = touch.location(in: self)
             let touchedNodes = self.nodes(at: positionInScene)
@@ -218,7 +206,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
                     if name == "player"
                     {
                         print("touched")
-                        spritesMoving = true;
+                        //spritesMoving = true
                     }
                 }
             }
@@ -226,10 +214,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?){
-        if let touch = touches.first{
-            spritesMoving = false;
-        }
+        
     }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+            }
     
     
     // MARK: - Actions -
@@ -248,6 +237,36 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
 //        } else {
 //            previousPanX = currentPanX
 //        }
+        if sender.state == .began{
+            var touchLocation = sender.location(in: sender.view)
+            touchLocation = self.convertPoint(fromView: touchLocation)
+            let touchedNodes = self.nodes(at: touchLocation)
+            for sprite in touchedNodes{
+                if let name = sprite.name{
+                    if name == "player"
+                    {
+                        playerSprite.canMove = true
+                        spritesMoving = true
+                    }
+                }
+            }
+        }
+        if(sender.state == .changed){
+            if(playerSprite.canMove)
+            {
+                var touchLocation = sender.location(in: sender.view)
+                touchLocation = self.convertPoint(fromView: touchLocation)
+                playerSprite.position = touchLocation
+//                var translation = sender.translation(in: sender.view)
+//                translation = CGPoint(x: translation.x, y: -translation.y)
+//                playerSprite.position = CGPoint(x: playerSprite.position.x + translation.x, y: playerSprite.position.y + translation.y)
+//                sender.setTranslation(CGPoint(x: 0, y:0), in: sender.view)
+            }
+        }
+        if(sender.state == .ended){
+            spritesMoving = false
+            playerSprite.canMove = false
+        }
     }
     
     
@@ -255,11 +274,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     override func update(_ currentTime: TimeInterval){
         calculateDeltaTime(currentTime: currentTime)
         moveSprites(dt: CGFloat(dt))
-        obstacleSpawnTimer = obstacleSpawnTimer - dt
-        if(obstacleSpawnTimer <= 0)
-        {
-            addObstacle()
-            obstacleSpawnTimer = obstacleInterval
+        if spritesMoving{
+            obstacleSpawnTimer = obstacleSpawnTimer - dt
+            if(obstacleSpawnTimer <= 0)
+            {
+                addObstacle()
+                obstacleSpawnTimer = obstacleInterval
+            }
         }
     }
 }

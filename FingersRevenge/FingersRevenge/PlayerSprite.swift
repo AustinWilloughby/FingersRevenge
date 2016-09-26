@@ -15,6 +15,7 @@ class PlayerSprite: SKShapeNode{
     var velocity:CGPoint = CGPoint.zero // speed with a direction
     var delta:CGFloat = 300.0 //Magnitude of vector per second
     var hit:Bool = false
+    var canMove:Bool = false
     
     // MARK: - Initialization
     init(size:CGSize, lineWeight:CGFloat, strokeColor:SKColor, fillColor:SKColor){
@@ -44,11 +45,6 @@ class PlayerSprite: SKShapeNode{
     
     // MARK: - Methods -
     func update(dt:CGFloat){
-        velocity = fwd * delta
-        position = position + velocity * dt
-    }
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?){
-        print("touched")
+        
     }
 }

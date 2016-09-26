@@ -178,7 +178,7 @@
 				TargetAttributes = {
 					3F1427A71D918D440032A1B1 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = P5F2W7RU5W;
+						DevelopmentTeam = V3GKW447FR;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -357,7 +357,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = P5F2W7RU5W;
+				DEVELOPMENT_TEAM = V3GKW447FR;
 				INFOPLIST_FILE = FingersRevenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
@@ -371,7 +371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = P5F2W7RU5W;
+				DEVELOPMENT_TEAM = V3GKW447FR;
 				INFOPLIST_FILE = FingersRevenge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
