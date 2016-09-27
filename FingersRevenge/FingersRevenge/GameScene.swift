@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene, UIGestureRecognizerDelegate {
+class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
     // MARK: - ivars -
     var levelNum:Int
     var totalScore:Int
@@ -83,6 +83,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         
         playerSprite.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
         playerSprite.name = "player"
+        playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
+        playerSprite.physicsBody?.isDynamic = false
+        playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
+        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall
+        playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         addChild(playerSprite)
         
         //unpauseSprites()
@@ -137,6 +142,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
         let x = arc4random_uniform(UInt32(playableRect.width))
         let y = playableRect.height
         o.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
+        
+        o.physicsBody = SKPhysicsBody.init(polygonFrom: o.path!)
+        o.physicsBody?.isDynamic = false
+        o.physicsBody?.categoryBitMask = CollisionMask.wall
+        o.physicsBody?.contactTestBitMask = CollisionMask.projectile
+        o.physicsBody?.collisionBitMask = CollisionMask.none
         addChild(o)
     }
     
@@ -149,7 +160,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
                 s.name = "diamond"
                 s.position = randomCGPointInRect(playableRect, margin: 300)
                 s.fwd = CGPoint.randomUnitVector()
-                addChild(s)
+                s.physicsBody = SKPhysicsBody.init(polygonFrom: s.path!)
+                s.physicsBody?.isDynamic = true
+                s.physicsBody?.categoryBitMask = CollisionMask.projectile
+                s.physicsBody?.contactTestBitMask = CollisionMask.wall
+                s.physicsBody?.collisionBitMask = CollisionMask.none
             }
         }
     }
@@ -249,6 +264,25 @@ class GameScene: SKScene, UIGestureRecognizerDelegate {
     
     func tapDetected(_ sender:UITapGestureRecognizer){
         print("poop")
+    }
+    
+    
+    func projectileDidCollideWithWall(projectile: DiamondSprite, wall: RectangleSprite){
+        print("hit")
+        projectile.removeFromParent()
+        wall.removeFromParent()
+    }
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
     }
     
     
