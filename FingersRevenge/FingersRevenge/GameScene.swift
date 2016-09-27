@@ -10,6 +10,8 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
+
+
 class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
     // MARK: - ivars -
     var levelNum:Int
@@ -269,7 +271,27 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func tapDetected(_ sender:UITapGestureRecognizer){
-        print("poop")
+        if sender.state == .ended{
+            var touchLocation = sender.location(in: sender.view)
+            touchLocation = self.convertPoint(fromView: touchLocation)
+            var s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
+            s.name = "projectile"
+//            s.physicsBody = SKPhysicsBody.init(polygonFrom: s.path!)
+//            s.physicsBody?.isDynamic = true
+//            s.physicsBody?.categoryBitMask = CollisionMask.projectile
+//            s.physicsBody?.contactTestBitMask = CollisionMask.wall
+//            s.physicsBody?.collisionBitMask = CollisionMask.none
+            s.position = playerSprite.position
+            let offset = touchLocation - s.position
+            if(offset.x < 0){print("poop")}
+            addChild(s)
+            let direction = offset.normalized()
+            let shootAmount = direction * 1000
+            let realDest = shootAmount + s.position
+            let actionMove = SKAction.move(to: realDest, duration: 2.0)
+            let actionMoveDone = SKAction.removeFromParent()
+            s.run(SKAction.sequence([actionMove, actionMoveDone]))
+        }
     }
     
     func gestureRecognizer(_ gestureRecognizer:UIGestureRecognizer, shouldRecognizeSimultaneouslyWith: UIGestureRecognizer) -> Bool{
