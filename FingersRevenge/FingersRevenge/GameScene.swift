@@ -23,6 +23,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     let levelLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     let scoreLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     
+    var tap:UITapGestureRecognizer = UITapGestureRecognizer()
+    var pan:UIPanGestureRecognizer = UIPanGestureRecognizer()
+    
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
     var spritesMoving = true
@@ -50,6 +53,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         self.levelNum = levelNum
         self.totalScore = totalScore
         self.sceneManager = sceneManager
+        
         super.init(size: size)
         self.scaleMode = scaleMode
         
@@ -73,12 +77,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         setupUI()
         makeSprites(howMany: 1)
         
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
-        pan.delegate = self
-        view.addGestureRecognizer(pan)
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
+        tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
         tap.delegate = self
+        
+        
+        pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
+        pan.delegate = self
+
+        view.addGestureRecognizer(pan)
         view.addGestureRecognizer(tap)
         
         playerSprite.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
@@ -266,6 +272,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         print("poop")
     }
     
+    func gestureRecognizer(_ gestureRecognizer:UIGestureRecognizer, shouldRecognizeSimultaneouslyWith: UIGestureRecognizer) -> Bool{
+        return (gestureRecognizer == tap && shouldRecognizeSimultaneouslyWith == pan)
+    }
     
     func projectileDidCollideWithWall(projectile: DiamondSprite, wall: RectangleSprite){
         print("hit")
