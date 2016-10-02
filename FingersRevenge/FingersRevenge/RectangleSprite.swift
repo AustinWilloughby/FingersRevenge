@@ -32,6 +32,14 @@ class RectangleSprite : SKShapeNode{
         pathToDraw.closeSubpath()
         path = pathToDraw
         self.fillColor = fillColor
+        
+        //adding physics body
+        self.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.physicsBody?.isDynamic = true
+        self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.categoryBitMask = PhysicsCategory.Obstacle
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.Projectile
+        self.physicsBody?.collisionBitMask = PhysicsCategory.Projectile
     }
     
     required init?(coder aDecoder: NSCoder){
@@ -45,5 +53,9 @@ class RectangleSprite : SKShapeNode{
         if(position.y < -size.height/2){
             self.removeFromParent()
         }
+    }
+    
+    func takeDamage(){
+        print("Took Damage")
     }
 }

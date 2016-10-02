@@ -10,7 +10,13 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-
+struct PhysicsCategory {
+    static let None      : UInt32 = 0
+    static let All       : UInt32 = UInt32.max
+    static let Obstacle  : UInt32 = 0b1       // 1
+    static let Projectile: UInt32 = 0b10      // 2
+    static let Player    : UInt32 = 0b11      // 3
+}
 
 class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
     // MARK: - ivars -
@@ -288,11 +294,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 touchLocation = self.convertPoint(fromView: touchLocation)
                 var s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
                 s.name = "projectile"
-//              s.physicsBody = SKPhysicsBody.init(polygonFrom: s.path!)
-//              s.physicsBody?.isDynamic = true
-//              s.physicsBody?.categoryBitMask = CollisionMask.projectile
-//              s.physicsBody?.contactTestBitMask = CollisionMask.wall
-//              s.physicsBody?.collisionBitMask = CollisionMask.none
                 s.position = playerSprite.position
                 let offset = touchLocation - s.position
                 addChild(s)
@@ -303,7 +304,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 let actionMoveDone = SKAction.removeFromParent()
                 s.run(SKAction.sequence([actionMove, actionMoveDone]))
                 self.levelScore -= 1
-                self.playerHealth -= 1
             }
         }
     }
@@ -318,7 +318,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         wall.removeFromParent()
     }
     
-    func didBeginContact(contact: SKPhysicsContact) {
+    //Checking collisions
+    func didBegin(_ contact: SKPhysicsContact) {
         var firstBody: SKPhysicsBody
         var secondBody: SKPhysicsBody
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
@@ -328,8 +329,16 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
+        print("collision")
+        
+        //Projectile Collision
+        if((firstBody.categoryBitMask == PhysicsCategory.Obstacle) && (secondBody.categoryBitMask == PhysicsCategory.Projectile)){
+            let rectangleNode = firstBody.node as! RectangleSprite
+            rectangleNode.takeDamage()
+            let projectileNode = secondBody.node as! DiamondSprite
+            projectileNode.removeFromParent()
+        }
     }
-    
     
     // MARK: - Game Loop -
     override func update(_ currentTime: TimeInterval){
