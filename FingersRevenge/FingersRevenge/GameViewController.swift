@@ -29,7 +29,7 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.showsFPS = showDebugData
         skView.showsNodeCount = showDebugData
-        
+        skView.showsPhysics = true
     }
     
     // MARK: - Scene Management -

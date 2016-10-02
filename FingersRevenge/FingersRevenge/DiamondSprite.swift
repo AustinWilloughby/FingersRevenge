@@ -36,6 +36,15 @@ class DiamondSprite: SKShapeNode{
         self.strokeColor = strokeColor
         self.lineWidth = lineWeight
         self.fillColor = fillColor
+        
+        //adding physics body
+        self.physicsBody = SKPhysicsBody(rectangleOf: size)
+        self.physicsBody?.isDynamic = true
+        self.physicsBody?.affectedByGravity = false
+        self.physicsBody?.categoryBitMask = PhysicsCategory.Projectile
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.Obstacle
+        self.physicsBody?.collisionBitMask = PhysicsCategory.None
+        self.physicsBody?.usesPreciseCollisionDetection = true
     }
     
     required init?(coder aDecoder: NSCoder){
