@@ -26,6 +26,8 @@
 		3F64F89C1D985C470035C17A /* RectangleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F64F89B1D985C470035C17A /* RectangleSprite.swift */; };
 		3F8216061D947127000A0491 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216051D947127000A0491 /* HomeScene.swift */; };
 		3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216071D9479D0000A0491 /* DiamondSprite.swift */; };
+		3FF476BE1DA19E2500D87D5E /* FingerParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */; };
+		3FF476BF1DA19E2500D87D5E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FF476BD1DA19E2500D87D5E /* spark.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		3F64F89B1D985C470035C17A /* RectangleSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleSprite.swift; sourceTree = "<group>"; };
 		3F8216051D947127000A0491 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		3F8216071D9479D0000A0491 /* DiamondSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondSprite.swift; sourceTree = "<group>"; };
+		3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FingerParticle.sks; sourceTree = "<group>"; };
+		3FF476BD1DA19E2500D87D5E /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,8 @@
 		3F8215FA1D946E79000A0491 /* Sprite */ = {
 			isa = PBXGroup;
 			children = (
+				3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */,
+				3FF476BD1DA19E2500D87D5E /* spark.png */,
 				3F8216071D9479D0000A0491 /* DiamondSprite.swift */,
 				3F64F89B1D985C470035C17A /* RectangleSprite.swift */,
 				3F223F321D988A9F00434A39 /* PlayerSprite.swift */,
@@ -209,7 +215,9 @@
 				3F1427B71D918D450032A1B1 /* Main.storyboard in Resources */,
 				3F1427AE1D918D450032A1B1 /* GameScene.sks in Resources */,
 				3F1427B91D918D450032A1B1 /* Assets.xcassets in Resources */,
+				3FF476BF1DA19E2500D87D5E /* spark.png in Resources */,
 				3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */,
+				3FF476BE1DA19E2500D87D5E /* FingerParticle.sks in Resources */,
 				3F1427B01D918D450032A1B1 /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -17,6 +17,7 @@ class PlayerSprite: SKShapeNode{
     var hit:Bool = false
     var canMove:Bool = false
     
+    
     // MARK: - Initialization
     init(size:CGSize, lineWeight:CGFloat, strokeColor:SKColor, fillColor:SKColor){
         super.init()
@@ -37,10 +38,19 @@ class PlayerSprite: SKShapeNode{
         self.strokeColor = strokeColor
         self.lineWidth = lineWeight
         self.fillColor = fillColor
+        
+        if let fingerParticle = SKEmitterNode(fileNamed: "FingerParticle") {
+            addChild(fingerParticle)
+        }
     }
     
     required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func changeColor(strokeColor:SKColor, fillColor:SKColor){
+        self.strokeColor = strokeColor
+        self.fillColor = fillColor
     }
     
     // MARK: - Methods -

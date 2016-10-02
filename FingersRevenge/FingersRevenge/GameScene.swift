@@ -16,6 +16,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     // MARK: - ivars -
     var levelNum:Int
     var totalScore:Int
+    
     let sceneManager:GameViewController
     
     var playableRect = CGRect.zero
@@ -41,10 +42,30 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var previousPanX:CGFloat = 0.0
     var playerTouch:UITouch?
     
+    
+    var healthBar:SKSpriteNode = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "ThreeHealth")))
+    
+    var playerHealth:Int = 3{
+        didSet{
+            switch playerHealth{
+            case 1:
+                healthBar.texture = SKTexture(image: #imageLiteral(resourceName: "OneHealth"))
+            case 2:
+                healthBar.texture = SKTexture(image: #imageLiteral(resourceName: "TwoHealth"))
+            default:
+                healthBar.texture = SKTexture(image: #imageLiteral(resourceName: "ThreeHealth"))
+            }
+        }
+    }
+
+    
     // MARK: - ivars with observers -
     var levelScore:Int = 0{
         didSet
         {
+            if levelScore < 0{
+                levelScore = 0
+            }
             scoreLabel.text = "Score: \(levelScore)"
             totalScore = totalScore + 1
         }
@@ -59,15 +80,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         super.init(size: size)
         self.scaleMode = scaleMode
         
-        
-//        let pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
-//        pan.delegate = self
-//        view?.addGestureRecognizer(pan)
-//        
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
-//        tap.delegate = self
-//        tap.numberOfTapsRequired = 1
-//        view?.addGestureRecognizer(tap)
     }
     
     required init?(coder aDecoder: NSCoder){
@@ -98,7 +110,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         addChild(playerSprite)
         
-        //unpauseSprites()
+        setPauseState(gamePaused: true)
     }
     
     
@@ -117,24 +129,28 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         backgroundColor = GameData.hud.backgroundColor
         
-        levelLabel.fontColor = fontColor
-        levelLabel.fontSize = fontSize
-        levelLabel.position = CGPoint(x: marginH,y: playableRect.maxY - marginV)
-        levelLabel.verticalAlignmentMode = .top
-        levelLabel.horizontalAlignmentMode = .left
-        levelLabel.text = "Level: \(levelNum)"
-        addChild(levelLabel)
+//        levelLabel.fontColor = fontColor
+//        levelLabel.fontSize = fontSize
+//        levelLabel.position = CGPoint(x: marginH,y: playableRect.maxY - marginV)
+//        levelLabel.verticalAlignmentMode = .top
+//        levelLabel.horizontalAlignmentMode = .left
+//        levelLabel.text = "Level: \(levelNum)"
+//        addChild(levelLabel)
+        
+        healthBar.anchorPoint = CGPoint(x: 0, y: 1)
+        healthBar.position = CGPoint(x: 0, y: playableRect.height)
+        addChild(healthBar)
         
         scoreLabel.fontColor = fontColor
         scoreLabel.fontSize = fontSize
-        
+
         scoreLabel.verticalAlignmentMode = .top
         scoreLabel.horizontalAlignmentMode = .left
-        // next 2 lines calculate the max width of scoreLabel
+          // next 2 lines calculate the max width of scoreLabel
         scoreLabel.text = "Score: 0000"
         let scoreLabelWidth = scoreLabel.frame.size.width
         
-        // here is the starting text of scoreLabel
+          // here is the starting text of scoreLabel
         scoreLabel.text = "Score: \(levelScore)"
         
         scoreLabel.position = CGPoint(x: playableRect.maxX - scoreLabelWidth - marginH,y: playableRect.maxY - marginV)
@@ -165,7 +181,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         if howMany > 0{
             for _ in 0...howMany-1{
                 s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
-                s.name = "diamond"
+                s.name = "projectile"
                 s.position = randomCGPointInRect(playableRect, margin: 300)
                 s.fwd = CGPoint.randomUnitVector()
                 s.physicsBody = SKPhysicsBody.init(polygonFrom: s.path!)
@@ -189,7 +205,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     func moveSprites(dt:CGFloat){
         if spritesMoving{
-            enumerateChildNodes(withName: "diamond", using: {
+            enumerateChildNodes(withName: "projectile", using: {
                 node, stop in
                 let s = node as! DiamondSprite
                 let halfWidth = s.frame.width/2
@@ -201,14 +217,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 if s.position.x <= halfWidth || s.position.x >= self.size.width - halfWidth{
                     s.reflectX() //bounce
                     s.update (dt: dt) //make and extra move
-                    self.levelScore = self.levelScore + 1 // lamest game ever "bounce and win"
                 }
                 
                 //check top/bottom
                 if s.position.y <= self.playableRect.minY + halfHeight || s.position.y >= self.playableRect.maxY - halfHeight{
                     s.reflectY() // bounce
                     s.update(dt: dt) // make an extra bounce
-                    self.levelScore = self.levelScore + 1 // lamest game ever - "bounce n win"
                 }
             })
             
@@ -226,10 +240,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             SKAction.run({self.spritesMoving = true})
             ])
         run(unpauseAction)
-    }
-    
-    func fireProjectile(target: CGPoint, shooter: CGPoint){
-        
     }
     
     // MARK: - Events -
@@ -250,8 +260,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 if let name = sprite.name{
                     if name == "player"
                     {
-                        playerSprite.canMove = true
-                        //spritesMoving = true
+                        playerSprite.changeColor(strokeColor: SKColor.clear, fillColor: SKColor.clear)
+                        setPauseState(gamePaused: false)
                     }
                 }
             }
@@ -262,35 +272,39 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 var touchLocation = sender.location(in: sender.view)
                 touchLocation = self.convertPoint(fromView: touchLocation)
                 playerSprite.position = touchLocation
+                
             }
         }
         if(sender.state == .ended){
-            //spritesMoving = false
-            playerSprite.canMove = false
+            playerSprite.changeColor(strokeColor: SKColor.white, fillColor: SKColor.lightGray)
+            setPauseState(gamePaused: true)
         }
     }
     
     func tapDetected(_ sender:UITapGestureRecognizer){
-        if sender.state == .ended{
-            var touchLocation = sender.location(in: sender.view)
-            touchLocation = self.convertPoint(fromView: touchLocation)
-            var s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
-            s.name = "projectile"
-//            s.physicsBody = SKPhysicsBody.init(polygonFrom: s.path!)
-//            s.physicsBody?.isDynamic = true
-//            s.physicsBody?.categoryBitMask = CollisionMask.projectile
-//            s.physicsBody?.contactTestBitMask = CollisionMask.wall
-//            s.physicsBody?.collisionBitMask = CollisionMask.none
-            s.position = playerSprite.position
-            let offset = touchLocation - s.position
-            if(offset.x < 0){print("poop")}
-            addChild(s)
-            let direction = offset.normalized()
-            let shootAmount = direction * 1000
-            let realDest = shootAmount + s.position
-            let actionMove = SKAction.move(to: realDest, duration: 2.0)
-            let actionMoveDone = SKAction.removeFromParent()
-            s.run(SKAction.sequence([actionMove, actionMoveDone]))
+        if spritesMoving == true{
+            if sender.state == .ended{
+                var touchLocation = sender.location(in: sender.view)
+                touchLocation = self.convertPoint(fromView: touchLocation)
+                var s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
+                s.name = "projectile"
+//              s.physicsBody = SKPhysicsBody.init(polygonFrom: s.path!)
+//              s.physicsBody?.isDynamic = true
+//              s.physicsBody?.categoryBitMask = CollisionMask.projectile
+//              s.physicsBody?.contactTestBitMask = CollisionMask.wall
+//              s.physicsBody?.collisionBitMask = CollisionMask.none
+                s.position = playerSprite.position
+                let offset = touchLocation - s.position
+                addChild(s)
+                let direction = offset.normalized()
+                let shootAmount = direction * 2300
+                let realDest = shootAmount + s.position
+                let actionMove = SKAction.move(to: realDest, duration: 0.5)
+                let actionMoveDone = SKAction.removeFromParent()
+                s.run(SKAction.sequence([actionMove, actionMoveDone]))
+                self.levelScore -= 1
+                self.playerHealth -= 1
+            }
         }
     }
     
@@ -319,15 +333,29 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     // MARK: - Game Loop -
     override func update(_ currentTime: TimeInterval){
-        calculateDeltaTime(currentTime: currentTime)
-        moveSprites(dt: CGFloat(dt))
-        if spritesMoving{
-            obstacleSpawnTimer = obstacleSpawnTimer - dt
-            if(obstacleSpawnTimer <= 0)
-            {
-                addObstacle()
-                obstacleSpawnTimer = obstacleInterval
+        if spritesMoving {
+            calculateDeltaTime(currentTime: currentTime)
+            moveSprites(dt: CGFloat(dt))
+            if spritesMoving{
+                obstacleSpawnTimer = obstacleSpawnTimer - dt
+                if(obstacleSpawnTimer <= 0)
+                {
+                    addObstacle()
+                    levelScore += 5;
+                    obstacleSpawnTimer = obstacleInterval
+                }
             }
         }
+    }
+    
+    func setPauseState(gamePaused: Bool){
+        spritesMoving = !gamePaused
+        playerSprite.canMove = !gamePaused
+        
+        enumerateChildNodes(withName: "projectile", using:{
+            node, stop in
+            let d = node as! DiamondSprite
+            d.isPaused = gamePaused
+        })
     }
 }
