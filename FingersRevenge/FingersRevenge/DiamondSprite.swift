@@ -41,9 +41,9 @@ class DiamondSprite: SKShapeNode{
         self.physicsBody = SKPhysicsBody(rectangleOf: size)
         self.physicsBody?.isDynamic = true
         self.physicsBody?.affectedByGravity = false
-        self.physicsBody?.categoryBitMask = PhysicsCategory.Projectile
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.Obstacle
-        self.physicsBody?.collisionBitMask = PhysicsCategory.None
+        self.physicsBody?.categoryBitMask = CollisionMask.projectile
+        self.physicsBody?.contactTestBitMask = CollisionMask.wall
+        self.physicsBody?.collisionBitMask = CollisionMask.projectile
         self.physicsBody?.usesPreciseCollisionDetection = true
     }
     

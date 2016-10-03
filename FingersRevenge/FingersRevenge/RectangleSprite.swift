@@ -37,9 +37,9 @@ class RectangleSprite : SKShapeNode{
         self.physicsBody = SKPhysicsBody(rectangleOf: size)
         self.physicsBody?.isDynamic = true
         self.physicsBody?.affectedByGravity = false
-        self.physicsBody?.categoryBitMask = PhysicsCategory.Obstacle
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.Projectile
-        self.physicsBody?.collisionBitMask = PhysicsCategory.Projectile
+        self.physicsBody?.categoryBitMask = CollisionMask.wall
+        self.physicsBody?.contactTestBitMask = CollisionMask.projectile
+        self.physicsBody?.collisionBitMask = CollisionMask.wall
     }
     
     required init?(coder aDecoder: NSCoder){

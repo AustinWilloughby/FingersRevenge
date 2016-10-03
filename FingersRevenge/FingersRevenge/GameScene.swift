@@ -10,14 +10,6 @@ import Foundation
 import SpriteKit
 import GameplayKit
 
-struct PhysicsCategory {
-    static let None      : UInt32 = 0
-    static let All       : UInt32 = UInt32.max
-    static let Obstacle  : UInt32 = 0b1       // 1
-    static let Projectile: UInt32 = 0b10      // 2
-    static let Player    : UInt32 = 0b11      // 3
-}
-
 class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate {
     // MARK: - ivars -
     var levelNum:Int
@@ -29,7 +21,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var totalSprites = 0
     
     var playerSprite = PlayerSprite(size: CGSize(width: 200, height: 200), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
-    let levelLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     let scoreLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     
     var tap:UITapGestureRecognizer = UITapGestureRecognizer()
@@ -54,6 +45,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var playerHealth:Int = 3{
         didSet{
             switch playerHealth{
+            //case 0: //Need empty texture
             case 1:
                 healthBar.texture = SKTexture(image: #imageLiteral(resourceName: "OneHealth"))
             case 2:
@@ -107,13 +99,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         view.addGestureRecognizer(pan)
         view.addGestureRecognizer(tap)
         
+        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        physicsWorld.contactDelegate = self
+        
         playerSprite.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
         playerSprite.name = "player"
         playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
-        playerSprite.physicsBody?.isDynamic = false
+        playerSprite.physicsBody?.isDynamic = true
         playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
         playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
+        
         addChild(playerSprite)
         
         setPauseState(gamePaused: true)
@@ -133,15 +129,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         let marginH = GameData.hud.marginH
         let marginV = GameData.hud.marginV
         
-        backgroundColor = GameData.hud.backgroundColor
-        
-//        levelLabel.fontColor = fontColor
-//        levelLabel.fontSize = fontSize
-//        levelLabel.position = CGPoint(x: marginH,y: playableRect.maxY - marginV)
-//        levelLabel.verticalAlignmentMode = .top
-//        levelLabel.horizontalAlignmentMode = .left
-//        levelLabel.text = "Level: \(levelNum)"
-//        addChild(levelLabel)
+        backgroundColor = GameData.hud.backgroundColor 
         
         healthBar.anchorPoint = CGPoint(x: 0, y: 1)
         healthBar.position = CGPoint(x: 0, y: playableRect.height)
@@ -176,7 +164,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         o.physicsBody = SKPhysicsBody.init(polygonFrom: o.path!)
         o.physicsBody?.isDynamic = false
         o.physicsBody?.categoryBitMask = CollisionMask.wall
-        o.physicsBody?.contactTestBitMask = CollisionMask.projectile
+        //o.physicsBody?.contactTestBitMask = CollisionMask.projectile
         o.physicsBody?.collisionBitMask = CollisionMask.none
         addChild(o)
     }
@@ -214,22 +202,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             enumerateChildNodes(withName: "projectile", using: {
                 node, stop in
                 let s = node as! DiamondSprite
-                let halfWidth = s.frame.width/2
-                let halfHeight = s.frame.height/2
-                
                 s.update(dt: dt)
-                
-                // check left/right
-                if s.position.x <= halfWidth || s.position.x >= self.size.width - halfWidth{
-                    s.reflectX() //bounce
-                    s.update (dt: dt) //make and extra move
-                }
-                
-                //check top/bottom
-                if s.position.y <= self.playableRect.minY + halfHeight || s.position.y >= self.playableRect.maxY - halfHeight{
-                    s.reflectY() // bounce
-                    s.update(dt: dt) // make an extra bounce
-                }
             })
             
             enumerateChildNodes(withName: "obstacle", using:{
@@ -292,7 +265,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             if sender.state == .ended{
                 var touchLocation = sender.location(in: sender.view)
                 touchLocation = self.convertPoint(fromView: touchLocation)
-                var s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
+                let s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
                 s.name = "projectile"
                 s.position = playerSprite.position
                 let offset = touchLocation - s.position
@@ -329,14 +302,20 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
-        print("collision")
+        print("FirstBodyMask: \(firstBody.categoryBitMask), SecondBodyMask: \(secondBody.categoryBitMask)")
         
         //Projectile Collision
-        if((firstBody.categoryBitMask == PhysicsCategory.Obstacle) && (secondBody.categoryBitMask == PhysicsCategory.Projectile)){
+        if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.projectile)){
             let rectangleNode = firstBody.node as! RectangleSprite
             rectangleNode.takeDamage()
             let projectileNode = secondBody.node as! DiamondSprite
             projectileNode.removeFromParent()
+        }
+        
+        if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.player)){
+            let wallNode = firstBody.node as! RectangleSprite
+            wallNode.removeFromParent()
+            playerHealth -= 1
         }
     }
     
