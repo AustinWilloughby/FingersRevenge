@@ -111,7 +111,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
         playerSprite.physicsBody?.isDynamic = true
         playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
-        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall
+        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         
         addChild(playerSprite)
@@ -337,6 +337,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             }
         }
         
+        print("\(firstBody.categoryBitMask), \(secondBody.categoryBitMask)")
+        
         if((firstBody.categoryBitMask == CollisionMask.player) && (secondBody.categoryBitMask == CollisionMask.finish)){
             sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
         }
@@ -353,7 +355,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 if(obstacleSpawnTimer <= 0)
                 {
                     //addObstacle()
-                    levelScore += 5;
+                    levelScore += 100;
                     obstacleSpawnTimer = obstacleInterval
                 }
             }

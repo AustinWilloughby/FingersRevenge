@@ -90,7 +90,7 @@ class LevelManager{
                     
                     case "E":
                         tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: SKColor.white)
-                        tempRect.name = "finish"
+                        tempRect.name = "obstacle"
                         let x = (x * unitSize) + (unitSize / 2)
                         let y = startingHeight + (y * unitSize)
                         tempRect.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
@@ -112,7 +112,6 @@ class LevelManager{
 }
 
 struct LevelMaps{
-    static let one: String = "1,E"
-    //static let one :String = "1,2,3,4,3,2,4,1,3,E"
+    static let one :String = "1,2,3,4,3,2,4,1,3,E"
     static let two :String = "2,1,3"
 }
