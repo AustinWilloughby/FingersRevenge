@@ -39,6 +39,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var previousPanX:CGFloat = 0.0
     var playerTouch:UITouch?
     
+    var levelManager:LevelManager
+    
     
     var healthBar:SKSpriteNode = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "ThreeHealth")))
     
@@ -75,6 +77,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         self.levelNum = levelNum
         self.totalScore = totalScore
         self.sceneManager = sceneManager
+        levelManager = LevelManager()
         
         super.init(size: size)
         self.scaleMode = scaleMode
@@ -150,6 +153,11 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         scoreLabel.position = CGPoint(x: playableRect.maxX - scoreLabelWidth - marginH,y: playableRect.maxY - marginV)
         addChild(scoreLabel)
+        
+        var level:[RectangleSprite] = levelManager.loadMap(map: LevelMaps.one)
+        for i in 0 ..< level.count{
+            addChild(level[i])
+        }
         
     }
     
@@ -336,7 +344,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 obstacleSpawnTimer = obstacleSpawnTimer - dt
                 if(obstacleSpawnTimer <= 0)
                 {
-                    addObstacle()
+                    //addObstacle()
                     levelScore += 5;
                     obstacleSpawnTimer = obstacleInterval
                 }
