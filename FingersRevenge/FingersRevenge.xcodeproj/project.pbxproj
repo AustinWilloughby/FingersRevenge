@@ -54,8 +54,8 @@
 		3F64F89B1D985C470035C17A /* RectangleSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleSprite.swift; sourceTree = "<group>"; };
 		3F8216051D947127000A0491 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		3F8216071D9479D0000A0491 /* DiamondSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondSprite.swift; sourceTree = "<group>"; };
-		3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelChunks.swift; path = FingersRevenge/LevelChunks.swift; sourceTree = "<group>"; };
-		3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelManager.swift; path = FingersRevenge/LevelManager.swift; sourceTree = "<group>"; };
+		3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelChunks.swift; sourceTree = "<group>"; };
+		3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
 		3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FingerParticle.sks; sourceTree = "<group>"; };
 		3FF476BD1DA19E2500D87D5E /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,8 +74,6 @@
 		3F14279F1D918D440032A1B1 = {
 			isa = PBXGroup;
 			children = (
-				3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */,
-				3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */,
 				3F1427AA1D918D450032A1B1 /* FingersRevenge */,
 				3F1427A91D918D450032A1B1 /* Products */,
 			);
@@ -144,6 +142,8 @@
 		3F8215FB1D946E7F000A0491 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */,
+				3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */,
 				3F5AC8621D94A24700835E0F /* LevelResults.swift */,
 			);
 			name = Model;
