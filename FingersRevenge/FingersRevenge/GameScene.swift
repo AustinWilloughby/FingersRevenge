@@ -274,7 +274,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             if sender.state == .ended{
                 var touchLocation = sender.location(in: sender.view)
                 touchLocation = self.convertPoint(fromView: touchLocation)
-                let s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
+                let s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.magenta, fillColor: SKColor.magenta)
                 s.name = "projectile"
                 s.position = playerSprite.position
                 let offset = touchLocation - s.position
@@ -336,8 +336,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 wallNode.removeFromParent()
             }
         }
-        
-        print("\(firstBody.categoryBitMask), \(secondBody.categoryBitMask)")
         
         if((firstBody.categoryBitMask == CollisionMask.player) && (secondBody.categoryBitMask == CollisionMask.finish)){
             sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
