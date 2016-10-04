@@ -23,6 +23,11 @@ class LevelManager{
     
     func loadMap(map:String)->[RectangleSprite]{
         var chunkMap:[String] = map.characters.split{$0 == ","}.map(String.init)
+        
+        if chunkMap.last != "E" {
+            chunkMap.append("E")
+        }
+        
         var chunks = [RectangleSprite]()
         
         
@@ -64,8 +69,8 @@ class LevelManager{
         
         var chunk = [RectangleSprite]()
         
-        for y in 1 ..< ySize{
-            currentLine = map[y-1]
+        for y in 0 ..< ySize{
+            currentLine = map[ySize - y - 1]
             
             for x in 0 ..< xSize{
                 var tempRect:RectangleSprite
@@ -112,6 +117,6 @@ class LevelManager{
 }
 
 struct LevelMaps{
-    static let one :String = "1,2,3,4,3,2,4,1,3,E"
+    static let one :String = "1,2,3,4,3,2,4,1,3"
     static let two :String = "2,1,3"
 }

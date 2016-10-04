@@ -318,7 +318,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 rectangleNode.takeDamage()
             }
             
-            if secondBody.node != nil{
+            if secondBody.node != nil {
                 let projectileNode = secondBody.node as! DiamondSprite
                 projectileNode.removeFromParent()
             }
