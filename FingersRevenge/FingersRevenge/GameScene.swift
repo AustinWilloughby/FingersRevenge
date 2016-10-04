@@ -45,7 +45,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var playerHealth:Int = 3{
         didSet{
             switch playerHealth{
-            //case 0: //Need empty texture
+            case 0:
+                healthBar.removeFromParent()
             case 1:
                 healthBar.texture = SKTexture(image: #imageLiteral(resourceName: "OneHealth"))
             case 2:
@@ -313,9 +314,16 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
         
         if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.player)){
-            let wallNode = firstBody.node as! RectangleSprite
-            wallNode.removeFromParent()
+            
             playerHealth -= 1
+            if(playerHealth <= 0)
+            {
+                sceneManager.loadGameOverScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
+            }
+            else{
+                let wallNode = firstBody.node as! RectangleSprite
+                wallNode.removeFromParent()
+            }
         }
     }
     
