@@ -26,6 +26,8 @@
 		3F64F89C1D985C470035C17A /* RectangleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F64F89B1D985C470035C17A /* RectangleSprite.swift */; };
 		3F8216061D947127000A0491 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216051D947127000A0491 /* HomeScene.swift */; };
 		3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216071D9479D0000A0491 /* DiamondSprite.swift */; };
+		3F9DE6051DA33ACB00F3E48F /* LevelChunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */; };
+		3F9DE6061DA33ACB00F3E48F /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */; };
 		3FF476BE1DA19E2500D87D5E /* FingerParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */; };
 		3FF476BF1DA19E2500D87D5E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FF476BD1DA19E2500D87D5E /* spark.png */; };
 /* End PBXBuildFile section */
@@ -52,6 +54,8 @@
 		3F64F89B1D985C470035C17A /* RectangleSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleSprite.swift; sourceTree = "<group>"; };
 		3F8216051D947127000A0491 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		3F8216071D9479D0000A0491 /* DiamondSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondSprite.swift; sourceTree = "<group>"; };
+		3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelChunks.swift; path = FingersRevenge/LevelChunks.swift; sourceTree = "<group>"; };
+		3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LevelManager.swift; path = FingersRevenge/LevelManager.swift; sourceTree = "<group>"; };
 		3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FingerParticle.sks; sourceTree = "<group>"; };
 		3FF476BD1DA19E2500D87D5E /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +74,8 @@
 		3F14279F1D918D440032A1B1 = {
 			isa = PBXGroup;
 			children = (
+				3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */,
+				3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */,
 				3F1427AA1D918D450032A1B1 /* FingersRevenge */,
 				3F1427A91D918D450032A1B1 /* Products */,
 			);
@@ -229,10 +235,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F9DE6061DA33ACB00F3E48F /* LevelManager.swift in Sources */,
 				3F5AC85F1D94A19600835E0F /* LevelFinishScene.swift in Sources */,
 				3F5AC85B1D9498F800835E0F /* CGPoint+Extensions.swift in Sources */,
 				3F5AC8611D94A1AC00835E0F /* GameOverScene.swift in Sources */,
 				3F1427B21D918D450032A1B1 /* GameScene.swift in Sources */,
+				3F9DE6051DA33ACB00F3E48F /* LevelChunks.swift in Sources */,
 				3F64F89C1D985C470035C17A /* RectangleSprite.swift in Sources */,
 				3F223F331D988A9F00434A39 /* PlayerSprite.swift in Sources */,
 				3F8216061D947127000A0491 /* HomeScene.swift in Sources */,
