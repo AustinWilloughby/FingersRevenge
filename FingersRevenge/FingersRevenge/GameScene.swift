@@ -295,7 +295,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     func projectileDidCollideWithWall(projectile: DiamondSprite, wall: RectangleSprite){
-        print("hit")
         projectile.removeFromParent()
         wall.removeFromParent()
     }
@@ -311,14 +310,18 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
-        print("FirstBodyMask: \(firstBody.categoryBitMask), SecondBodyMask: \(secondBody.categoryBitMask)")
         
         //Projectile Collision
         if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.projectile)){
-            let rectangleNode = firstBody.node as! RectangleSprite
-            rectangleNode.takeDamage()
-            let projectileNode = secondBody.node as! DiamondSprite
-            projectileNode.removeFromParent()
+            if firstBody.node != nil{
+                let rectangleNode = firstBody.node as! RectangleSprite
+                rectangleNode.takeDamage()
+            }
+            
+            if secondBody.node != nil{
+                let projectileNode = secondBody.node as! DiamondSprite
+                projectileNode.removeFromParent()
+            }
         }
         
         if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.player)){
@@ -333,12 +336,17 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 wallNode.removeFromParent()
             }
         }
+        
+        if((firstBody.categoryBitMask == CollisionMask.player) && (secondBody.categoryBitMask == CollisionMask.finish)){
+            sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
+        }
     }
     
     // MARK: - Game Loop -
     override func update(_ currentTime: TimeInterval){
+        calculateDeltaTime(currentTime: currentTime)
+        
         if spritesMoving {
-            calculateDeltaTime(currentTime: currentTime)
             moveSprites(dt: CGFloat(dt))
             if spritesMoving{
                 obstacleSpawnTimer = obstacleSpawnTimer - dt

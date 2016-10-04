@@ -9,6 +9,15 @@
 import Foundation
 
 struct LevelChunks{
+    static let end:[String] =
+    [
+            "EEEEEEEEEE",
+            "----------",
+            "----------",
+            "----------",
+            "----------"
+    ]
+    
     static let one:[String] =
     [
         "O---------",
@@ -19,7 +28,7 @@ struct LevelChunks{
     ]
     
     static let two:[String] =
-        [
+    [
             "O---O-----",
             "O---O-----",
             "O--------O",
@@ -28,13 +37,24 @@ struct LevelChunks{
     ]
     
     static let three:[String] =
-        [
+    [
             "O--O-----O",
             "O--O-----O",
             "O--OO----O",
             "O--O-----O",
             "O--O-----O"
     ]
+    
+    static let four:[String] =
+    [
+            "----------",
+            "OOOOOOOOOO",
+            "----------",
+            "OOOOOOOOOO",
+            "----------"
+    ]
+    
+    
     
     
 }

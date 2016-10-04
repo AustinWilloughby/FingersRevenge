@@ -12,8 +12,8 @@ import SpriteKit
 class RectangleSprite : SKShapeNode{
     var fwd:CGPoint = CGPoint(x:0.0, y:-1.0) // Down
     var velocity:CGPoint = CGPoint.zero // speed with a direction
-    var delta:CGFloat = 600.0 //Magnitude of vector per second
-    var health:CGFloat = 3.0//amount of times to be hit until destroyed
+    var delta:CGFloat = 400.0 //Magnitude of vector per second
+    var health:Int = 2//amount of times to be hit until destroyed
     let size:CGSize
     
     let colorArrayIndex = 2;//which color to draw
@@ -34,12 +34,12 @@ class RectangleSprite : SKShapeNode{
         self.fillColor = fillColor
         
         //adding physics body
-        self.physicsBody = SKPhysicsBody(rectangleOf: size)
-        self.physicsBody?.isDynamic = true
-        self.physicsBody?.affectedByGravity = false
-        self.physicsBody?.categoryBitMask = CollisionMask.wall
-        self.physicsBody?.contactTestBitMask = CollisionMask.projectile
-        self.physicsBody?.collisionBitMask = CollisionMask.wall
+//        self.physicsBody = SKPhysicsBody(rectangleOf: size)
+//        self.physicsBody?.isDynamic = true
+//        self.physicsBody?.affectedByGravity = false
+//        self.physicsBody?.categoryBitMask = CollisionMask.wall
+//        self.physicsBody?.contactTestBitMask = CollisionMask.projectile
+//        self.physicsBody?.collisionBitMask = CollisionMask.wall
     }
     
     required init?(coder aDecoder: NSCoder){
@@ -53,9 +53,16 @@ class RectangleSprite : SKShapeNode{
         if(position.y < -size.height/2){
             self.removeFromParent()
         }
+        
     }
     
     func takeDamage(){
-        print("Took Damage")
+        health -= 1
+        if health == 1{
+            self.fillColor = UIColor.yellow
+        }
+        if health <= 0{
+            self.removeFromParent()
+        }
     }
 }

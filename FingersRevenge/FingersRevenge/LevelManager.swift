@@ -30,19 +30,25 @@ class LevelManager{
         for i in 0 ..< chunkMap.count{
             var levelChunk: [String]
             switch(chunkMap[i]){
+                case "1":
+                    levelChunk = LevelChunks.one
+                
                 case "2":
                     levelChunk = LevelChunks.two
                 
                 case "3":
                     levelChunk = LevelChunks.three
                 
+                case "4":
+                    levelChunk = LevelChunks.four
+                
                 default:
-                    levelChunk = LevelChunks.one
+                    levelChunk = LevelChunks.end
             }
             
             let chunkInfo = loadChunk(map: levelChunk, startingHeight: currentStartHeight)
             let currentChunk = chunkInfo.0
-            currentStartHeight += chunkInfo.1
+            currentStartHeight = chunkInfo.1
             
             chunks.append(contentsOf: currentChunk)
         }
@@ -52,8 +58,6 @@ class LevelManager{
     
     
     private func loadChunk(map:[String], startingHeight: Int)->(newChunk: [RectangleSprite], height: Int){
-        print(map)
-        print(startHeight)
         var currentLine = map[0]
         let xSize: Int = tilesAcross
         let ySize: Int = map.count
@@ -83,6 +87,21 @@ class LevelManager{
                         tempRect.physicsBody?.collisionBitMask = CollisionMask.none
                         
                         chunk.append(tempRect)
+                    
+                    case "E":
+                        tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: SKColor.white)
+                        tempRect.name = "finish"
+                        let x = (x * unitSize) + (unitSize / 2)
+                        let y = startingHeight + (y * unitSize)
+                        tempRect.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
+                        
+                        tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
+                        tempRect.physicsBody?.isDynamic = false
+                        tempRect.physicsBody?.categoryBitMask = CollisionMask.finish
+                        //tempRect.physicsBody?.contactTestBitMask = CollisionMask.projectile
+                        tempRect.physicsBody?.collisionBitMask = CollisionMask.none
+                    
+                        chunk.append(tempRect)
                     default:
                         break
                 }
@@ -93,6 +112,7 @@ class LevelManager{
 }
 
 struct LevelMaps{
-    static let one :String = "1,2,3"
+    static let one: String = "1,E"
+    //static let one :String = "1,2,3,4,3,2,4,1,3,E"
     static let two :String = "2,1,3"
 }

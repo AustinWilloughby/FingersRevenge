@@ -42,8 +42,9 @@ struct GameData{
 struct CollisionMask {
     static let none         : UInt32 = 0
     static let all          : UInt32 = UInt32.max
-    static let wall       : UInt32 = 0b1
-    static let player         : UInt32 = 0b10
+    static let wall         : UInt32 = 0b1
+    static let player       : UInt32 = 0b10
     static let projectile   : UInt32 = 0b100
+    static let finish       : UInt32 = 0b100
 }
 
