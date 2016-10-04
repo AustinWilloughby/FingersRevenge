@@ -62,6 +62,9 @@ class RectangleSprite : SKShapeNode{
             self.fillColor = UIColor.yellow
         }
         if health <= 0{
+            self.physicsBody?.categoryBitMask = CollisionMask.none
+            self.physicsBody?.contactTestBitMask = CollisionMask.none
+            self.physicsBody?.collisionBitMask = CollisionMask.none
             self.run(SKAction.sequence([SKAction.scale(by: 0.0, duration: 0.2), SKAction.run{ self.removeFromParent() }]))
         }
     }
