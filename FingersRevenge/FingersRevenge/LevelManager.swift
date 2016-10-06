@@ -76,10 +76,11 @@ class LevelManager{
                 var tempRect:RectangleSprite
                 
                 let index = currentLine.index(currentLine.startIndex, offsetBy: x)
+                let color = randomColor()
                 switch currentLine[index]
                 {
                     case "O":
-                        tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: SKColor.green)
+                        tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: randomColor())
                         tempRect.name = "obstacle"
                         let x = (x * unitSize) + (unitSize / 2)
                         let y = startingHeight + (y * unitSize)
@@ -113,6 +114,19 @@ class LevelManager{
             }
         }
         return (chunk, startingHeight + (ySize * unitSize))
+    }
+    
+    func randomColor() -> SKColor{
+        var h:CGFloat, s:CGFloat, l:CGFloat
+        let hRange:CGFloat = 140.0 - 90.0
+        let sRange:CGFloat = 100.0 - 50.0
+        let lRange:CGFloat = 60.0 - 40.0
+        h = (90.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * hRange)))/3.6/100.0
+//        s = (50.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * sRange)))/100.0
+        s = 100.0/100.0
+        l = (60.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
+        
+        return SKColor(hue: h, saturation: s, brightness: l, alpha: 1)
     }
 }
 
