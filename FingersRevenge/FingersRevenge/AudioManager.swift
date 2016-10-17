@@ -6,13 +6,13 @@
 //  Copyright © 2016 Austin Willoughby / Peter Lockhart. All rights reserved.
 //
 //  Based on code found here: http://stackoverflow.com/questions/32882737/how-to-play-background-music-with-swift-2-0
+//  And here: http://stackoverflow.com/questions/37033036/swift-2-avaudioplayers-to-play-multiple-sounds-at-once
 //
 
 import AVFoundation
 
 var backgroundMusicPlayer = AVAudioPlayer()
-
-
+var arrayOfPlayers: [AVAudioPlayer] = [AVAudioPlayer]()
 
 func playBackgroundMusic(filename: String){
     let url = Bundle.main.url(forResource: filename, withExtension: nil)
@@ -27,6 +27,26 @@ func playBackgroundMusic(filename: String){
         backgroundMusicPlayer.prepareToPlay()
         backgroundMusicPlayer.play()
     } catch let error as NSError {
+        print(error.description)
+    }
+}
+
+func playNailClip(){
+    let fx = Bundle.main.url(forResource: "nailClip.mp3", withExtension: nil)
+    
+    guard let newURL = fx else{
+        print("failed to load nail fx")
+        return
+    }
+    
+    do{
+        try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+        try AVAudioSession.sharedInstance().setActive(true)
+        let audioPlayer = try AVAudioPlayer(contentsOf: newURL)
+        arrayOfPlayers.append(audioPlayer)
+        arrayOfPlayers.last?.prepareToPlay()
+        arrayOfPlayers.last?.play()
+    } catch let error as NSError{
         print(error.description)
     }
 }

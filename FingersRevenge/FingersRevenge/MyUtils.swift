@@ -113,3 +113,9 @@ func getScreenPhysicalAspectRatioPortrait()->CGFloat{
     return UIScreen.main.nativeBounds.width / UIScreen.main.nativeBounds.height
 }
 
+extension CGVector {
+    func angle() -> CGFloat {
+        return atan2(dy, dx)
+    }
+}
+

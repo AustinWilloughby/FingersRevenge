@@ -91,7 +91,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     // MARK: - Lifecycle -
     override func didMove(to view: SKView){
         setupUI()
-        makeSprites(howMany: 1)
+        //makeSprites(howMany: 1)
         
         tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
         tap.delegate = self
@@ -161,24 +161,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
     }
     
-    func makeSprites(howMany:Int){
-        totalSprites = totalSprites + howMany
-        var s:DiamondSprite
-        if howMany > 0{
-            for _ in 0...howMany-1{
-                s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.green, fillColor: SKColor.magenta)
-                s.name = "projectile"
-                s.position = randomCGPointInRect(playableRect, margin: 300)
-                s.fwd = CGPoint.randomUnitVector()
-                s.physicsBody = SKPhysicsBody.init(polygonFrom: s.path!)
-                s.physicsBody?.isDynamic = true
-                s.physicsBody?.categoryBitMask = CollisionMask.projectile
-                s.physicsBody?.contactTestBitMask = CollisionMask.wall
-                s.physicsBody?.collisionBitMask = CollisionMask.none
-            }
-        }
-    }
-    
     func calculateDeltaTime(currentTime: TimeInterval){
         if lastUpdateTime > 0 {
             dt = currentTime - lastUpdateTime
@@ -193,7 +175,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         if spritesMoving{
             enumerateChildNodes(withName: "projectile", using: {
                 node, stop in
-                let s = node as! DiamondSprite
+                let s = node as! ProjectileSprite
                 s.update(dt: dt)
             })
             
@@ -257,18 +239,22 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             if sender.state == .ended{
                 var touchLocation = sender.location(in: sender.view)
                 touchLocation = self.convertPoint(fromView: touchLocation)
-                let s = DiamondSprite(size: CGSize(width: 60, height: 100), lineWeight: 10, strokeColor: SKColor.magenta, fillColor: SKColor.magenta)
+                let s = ProjectileSprite(size: SKTexture(image: #imageLiteral(resourceName: "NailClipping")).size())
                 s.name = "projectile"
                 s.position = playerSprite.position
+                s.zPosition = CGFloat(-1)
                 let offset = touchLocation - s.position
                 addChild(s)
                 let direction = offset.normalized()
                 let shootAmount = direction * 2300
                 let realDest = shootAmount + s.position
+                s.rotateToDirection(dest: realDest)
                 let actionMove = SKAction.move(to: realDest, duration: 0.5)
                 let actionMoveDone = SKAction.removeFromParent()
                 s.run(SKAction.sequence([actionMove, actionMoveDone]))
                 self.levelScore -= 1
+                
+                playNailClip()
             }
         }
     }
@@ -277,7 +263,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         return (gestureRecognizer == tap && shouldRecognizeSimultaneouslyWith == pan)
     }
     
-    func projectileDidCollideWithWall(projectile: DiamondSprite, wall: RectangleSprite){
+    func projectileDidCollideWithWall(projectile: ProjectileSprite, wall: RectangleSprite){
         projectile.removeFromParent()
         wall.removeFromParent()
     }
@@ -304,7 +290,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             }
             
             if secondBody.node != nil {
-                let projectileNode = secondBody.node as! DiamondSprite
+                let projectileNode = secondBody.node as! ProjectileSprite
                 projectileNode.removeFromParent()
             }
         }
@@ -331,6 +317,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     // MARK: - Game Loop -
     override func update(_ currentTime: TimeInterval){
         calculateDeltaTime(currentTime: currentTime)
+        arrayOfPlayers=arrayOfPlayers.filter(){$0.isPlaying}
         
         if spritesMoving {
             moveSprites(dt: CGFloat(dt))
@@ -351,7 +338,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         enumerateChildNodes(withName: "projectile", using:{
             node, stop in
-            let d = node as! DiamondSprite
+            let d = node as! ProjectileSprite
             d.isPaused = gamePaused
         })
     }
