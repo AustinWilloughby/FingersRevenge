@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F030ED31DB564390099868B /* BackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F030ED21DB564390099868B /* BackgroundMusic.mp3 */; };
+		3F030ED51DB5645D0099868B /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F030ED41DB5645D0099868B /* AudioManager.swift */; };
 		3F1427AC1D918D450032A1B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1427AB1D918D450032A1B1 /* AppDelegate.swift */; };
 		3F1427AE1D918D450032A1B1 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427AD1D918D450032A1B1 /* GameScene.sks */; };
 		3F1427B01D918D450032A1B1 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427AF1D918D450032A1B1 /* Actions.sks */; };
@@ -33,6 +35,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F030ED21DB564390099868B /* BackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BackgroundMusic.mp3; sourceTree = "<group>"; };
+		3F030ED41DB5645D0099868B /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		3F1427A81D918D450032A1B1 /* FingersRevenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FingersRevenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F1427AB1D918D450032A1B1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F1427AD1D918D450032A1B1 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -104,6 +108,7 @@
 				3F1427B81D918D450032A1B1 /* Assets.xcassets */,
 				3F1427BA1D918D450032A1B1 /* LaunchScreen.storyboard */,
 				3F1427BD1D918D450032A1B1 /* Info.plist */,
+				3F030ED21DB564390099868B /* BackgroundMusic.mp3 */,
 			);
 			path = FingersRevenge;
 			sourceTree = "<group>";
@@ -142,6 +147,7 @@
 		3F8215FB1D946E7F000A0491 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				3F030ED41DB5645D0099868B /* AudioManager.swift */,
 				3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */,
 				3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */,
 				3F5AC8621D94A24700835E0F /* LevelResults.swift */,
@@ -220,6 +226,7 @@
 			files = (
 				3F1427B71D918D450032A1B1 /* Main.storyboard in Resources */,
 				3F1427AE1D918D450032A1B1 /* GameScene.sks in Resources */,
+				3F030ED31DB564390099868B /* BackgroundMusic.mp3 in Resources */,
 				3F1427B91D918D450032A1B1 /* Assets.xcassets in Resources */,
 				3FF476BF1DA19E2500D87D5E /* spark.png in Resources */,
 				3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */,
@@ -238,6 +245,7 @@
 				3F9DE6061DA33ACB00F3E48F /* LevelManager.swift in Sources */,
 				3F5AC85F1D94A19600835E0F /* LevelFinishScene.swift in Sources */,
 				3F5AC85B1D9498F800835E0F /* CGPoint+Extensions.swift in Sources */,
+				3F030ED51DB5645D0099868B /* AudioManager.swift in Sources */,
 				3F5AC8611D94A1AC00835E0F /* GameOverScene.swift in Sources */,
 				3F1427B21D918D450032A1B1 /* GameScene.swift in Sources */,
 				3F9DE6051DA33ACB00F3E48F /* LevelChunks.swift in Sources */,

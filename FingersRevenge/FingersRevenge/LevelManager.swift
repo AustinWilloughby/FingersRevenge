@@ -76,38 +76,20 @@ class LevelManager{
                 var tempRect:RectangleSprite
                 
                 let index = currentLine.index(currentLine.startIndex, offsetBy: x)
-                let color = randomColor()
                 switch currentLine[index]
                 {
-                    case "O":
-                        tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: randomColor())
-                        tempRect.name = "obstacle"
-                        let x = (x * unitSize) + (unitSize / 2)
-                        let y = startingHeight + (y * unitSize)
-                        tempRect.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                        
-                        tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
-                        tempRect.physicsBody?.isDynamic = false
-                        tempRect.physicsBody?.categoryBitMask = CollisionMask.wall
-                        //tempRect.physicsBody?.contactTestBitMask = CollisionMask.projectile
-                        tempRect.physicsBody?.collisionBitMask = CollisionMask.none
-                        
+                    case "O": //Generic obstacle
+                        tempRect = generateRectDetails(fill: randomColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "O")
                         chunk.append(tempRect)
                     
-                    case "E":
-                        tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: SKColor.white)
-                        tempRect.name = "obstacle"
-                        let x = (x * unitSize) + (unitSize / 2)
-                        let y = startingHeight + (y * unitSize)
-                        tempRect.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
-                        
-                        tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
-                        tempRect.physicsBody?.isDynamic = false
-                        tempRect.physicsBody?.categoryBitMask = CollisionMask.finish
-                        //tempRect.physicsBody?.contactTestBitMask = CollisionMask.projectile
-                        tempRect.physicsBody?.collisionBitMask = CollisionMask.none
-                    
+                    case "L": //Finish line (graphic)
+                        tempRect = generateRectDetails(fill: SKColor.white, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "L")
                         chunk.append(tempRect)
+                    
+                    case "F": //Finish line (collider)
+                        tempRect = generateRectDetails(fill: SKColor.clear, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "F")
+                        chunk.append(tempRect)
+                    
                     default:
                         break
                 }
@@ -127,6 +109,38 @@ class LevelManager{
         l = (60.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
         
         return SKColor(hue: h, saturation: s, brightness: l, alpha: 1)
+    }
+    
+    func generateRectDetails(fill: SKColor, stroke: SKColor, name: String, xValue: Int, yValue: Int, startHeight: Int, elementID: String) -> RectangleSprite
+    {
+        let tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: fill, strokeColor: stroke)
+        tempRect.name = name
+        let x = (xValue * unitSize) + (unitSize / 2)
+        let y = startHeight + (yValue * unitSize)
+        tempRect.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
+        
+        switch elementID
+        {
+            case "O":
+                tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
+                tempRect.physicsBody?.isDynamic = false
+                tempRect.physicsBody?.categoryBitMask = CollisionMask.wall
+                tempRect.physicsBody?.collisionBitMask = CollisionMask.none
+            
+            case "L": break
+                //For now we arent doing anything
+            
+            case "F":
+                tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
+                tempRect.physicsBody?.isDynamic = false
+                tempRect.physicsBody?.categoryBitMask = CollisionMask.finish
+                tempRect.physicsBody?.collisionBitMask = CollisionMask.none
+            
+            default:
+                break
+        }
+        
+        return tempRect
     }
 }
 

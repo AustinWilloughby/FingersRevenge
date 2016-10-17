@@ -161,23 +161,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
     }
     
-    //adds an obstacle to the top of the screen
-    func addObstacle(){
-        var o:RectangleSprite
-        o = RectangleSprite(size: CGSize(width: 300, height: 80), fillColor:SKColor.green)
-        o.name = "obstacle"
-        let x = arc4random_uniform(UInt32(playableRect.width))
-        let y = playableRect.height
-        o.position = CGPoint(x: CGFloat(x), y: CGFloat(y))
-        
-        o.physicsBody = SKPhysicsBody.init(polygonFrom: o.path!)
-        o.physicsBody?.isDynamic = false
-        o.physicsBody?.categoryBitMask = CollisionMask.wall
-        //o.physicsBody?.contactTestBitMask = CollisionMask.projectile
-        o.physicsBody?.collisionBitMask = CollisionMask.none
-        addChild(o)
-    }
-    
     func makeSprites(howMany:Int){
         totalSprites = totalSprites + howMany
         var s:DiamondSprite
@@ -299,6 +282,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         wall.removeFromParent()
     }
     
+    
+    
     //Checking collisions
     func didBegin(_ contact: SKPhysicsContact) {
         var firstBody: SKPhysicsBody
@@ -342,6 +327,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
     }
     
+    
     // MARK: - Game Loop -
     override func update(_ currentTime: TimeInterval){
         calculateDeltaTime(currentTime: currentTime)
@@ -352,7 +338,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 obstacleSpawnTimer = obstacleSpawnTimer - dt
                 if(obstacleSpawnTimer <= 0)
                 {
-                    //addObstacle()
                     levelScore += 100;
                     obstacleSpawnTimer = obstacleInterval
                 }

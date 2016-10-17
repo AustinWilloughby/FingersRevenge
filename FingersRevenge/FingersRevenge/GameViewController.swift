@@ -25,6 +25,8 @@ class GameViewController: UIViewController {
         skView = self.view as! SKView
         loadHomeScene()
         
+        playBackgroundMusic(filename: "BackgroundMusic.mp3")
+        
         //debug stuff
         skView.ignoresSiblingOrder = true
         skView.showsFPS = showDebugData

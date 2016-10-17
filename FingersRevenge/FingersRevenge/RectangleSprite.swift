@@ -19,7 +19,7 @@ class RectangleSprite : SKShapeNode{
     let colorArrayIndex = 2;//which color to draw
     
     // MARK: - Initialization
-    init(size:CGSize, fillColor:SKColor){
+    init(size:CGSize, fillColor:SKColor, strokeColor: SKColor){
         self.size = size
         super.init()
         
@@ -32,6 +32,7 @@ class RectangleSprite : SKShapeNode{
         pathToDraw.closeSubpath()
         path = pathToDraw
         self.fillColor = fillColor
+        self.strokeColor = strokeColor
         
         //adding physics body
 //        self.physicsBody = SKPhysicsBody(rectangleOf: size)
