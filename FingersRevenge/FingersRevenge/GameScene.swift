@@ -284,13 +284,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         //Projectile Collision
         if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.projectile)){
-            if firstBody.node != nil{
+            if firstBody.node != nil && secondBody.node != nil{
                 let rectangleNode = firstBody.node as! RectangleSprite
-                rectangleNode.takeDamage()
-            }
-            
-            if secondBody.node != nil {
                 let projectileNode = secondBody.node as! ProjectileSprite
+                if(!projectileNode.hit)
+                {
+                    rectangleNode.takeDamage()
+                }
+                projectileNode.hit = true
                 projectileNode.removeFromParent()
             }
         }
