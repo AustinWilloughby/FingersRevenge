@@ -12,7 +12,7 @@ struct GameData{
     init(){
         fatalError("The GameData struct is a singleton")
     }
-    static let maxLevel = 3
+    static var level = 1
     struct font{
         static let mainFont = "AvenirNextCondenced-DemiBold"
     }

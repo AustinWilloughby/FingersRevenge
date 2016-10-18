@@ -23,6 +23,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var playerSprite = PlayerSprite(size: CGSize(width: 200, height: 200), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
     let scoreLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     let pauseLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
+    let shootLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
     var screenBlocker: RectangleSprite
     
     var tap:UITapGestureRecognizer = UITapGestureRecognizer()
@@ -80,7 +81,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         self.totalScore = totalScore
         self.sceneManager = sceneManager
         levelManager = LevelManager()
-        screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.35), strokeColor: SKColor.clear)
+        screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.6), strokeColor: SKColor.clear)
         
         super.init(size: size)
         self.scaleMode = scaleMode
@@ -119,6 +120,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         
         addChild(playerSprite)
+
         
         pauseLabel.fontColor = SKColor.lightGray
         pauseLabel.fontSize = GameData.hud.fontSize * 1.3
@@ -127,13 +129,25 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         pauseLabel.horizontalAlignmentMode = .center
         pauseLabel.text = "Move Diamond to Begin"
         pauseLabel.position = playerSprite.position
-        pauseLabel.position.y = pauseLabel.position.y + 225
+        pauseLabel.position.y = pauseLabel.position.y + 425
         
         pauseLabel.zPosition = 2
         addChild(pauseLabel)
         
+        shootLabel.fontColor = SKColor.lightGray
+        shootLabel.fontSize = GameData.hud.fontSize * 0.9
         
-        screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.5), strokeColor: SKColor.clear)
+        shootLabel.verticalAlignmentMode = .center
+        shootLabel.horizontalAlignmentMode = .center
+        shootLabel.text = "Tap With Second Finger to Shoot"
+        shootLabel.position = playerSprite.position
+        shootLabel.position.y = pauseLabel.position.y - 50
+        
+        shootLabel.zPosition = 2
+        addChild(shootLabel)
+        
+        
+        screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6), strokeColor: SKColor.clear)
         screenBlocker.zPosition = 1
         screenBlocker.position = CGPoint(x: size.width/2, y:size.height/2)
         addChild(screenBlocker)
@@ -157,6 +171,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         healthBar.anchorPoint = CGPoint(x: 0, y: 1)
         healthBar.position = CGPoint(x: 0, y: playableRect.height)
+        healthBar.zPosition = 2
         addChild(healthBar)
         
         scoreLabel.fontColor = GameData.hud.fontColorWhite
@@ -172,11 +187,21 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         scoreLabel.text = "Score: \(levelScore)"
         
         scoreLabel.position = CGPoint(x: playableRect.maxX - scoreLabelWidth - marginH,y: playableRect.maxY - marginV)
+        scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
-        var level:[RectangleSprite] = levelManager.loadMap(map: LevelMaps.one)
-        for i in 0 ..< level.count{
-            addChild(level[i])
+        if(GameData.level >= 1){
+            //Endless start
+            var level:[RectangleSprite] = levelManager.randomChunk()
+            for i in 0 ..< level.count{
+                addChild(level[i])
+            }
+        }
+        else{
+            var level:[RectangleSprite] = levelManager.loadMap(map: levelManager.getLevelAtIndex(index: GameData.level))
+            for i in 0 ..< level.count{
+                addChild(level[i])
+            }
         }
         
     }
@@ -199,11 +224,20 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 s.update(dt: dt)
             })
             
+            var count:Int = 0
             enumerateChildNodes(withName: "obstacle", using:{
                 node, stop in
+                count += 1
                 let o = node as! RectangleSprite
                 o.update(dt: dt)
             })
+            
+            if(count <= 0){
+                var level:[RectangleSprite] = levelManager.randomChunk()
+                for i in 0 ..< level.count{
+                    addChild(level[i])
+                }
+            }
         }
     }
     
@@ -359,6 +393,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         //Player Colliding with Finish Line
         if((firstBody.categoryBitMask == CollisionMask.player) && (secondBody.categoryBitMask == CollisionMask.finish)){
+            GameData.level += 1
             sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
         }
     }
@@ -402,9 +437,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 pauseLabel.position.y = playerSprite.position.y + 225
             }
             pauseLabel.fontColor = SKColor.lightGray
-            screenBlocker.fillColor = SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.35)
+            screenBlocker.fillColor = SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
         }
         else{
+            shootLabel.isHidden = true
             pauseLabel.text = "Move Diamond to Resume"
             screenBlocker.fillColor = SKColor.clear
             pauseLabel.fontColor = SKColor.clear
