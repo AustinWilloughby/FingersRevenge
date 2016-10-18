@@ -90,6 +90,12 @@ class LevelManager{
                         tempRect = generateRectDetails(fill: SKColor.clear, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "F")
                         chunk.append(tempRect)
                     
+                    case "G": //Gate Obstacle
+                        tempRect = generateRectDetails(fill: randomColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "G")
+                        chunk.append(tempRect)
+                    case "B": //Button Obstacle
+                        tempRect = generateRectDetails(fill: SKColor.red, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "G")
+                    
                     default:
                         break
                 }
@@ -134,6 +140,12 @@ class LevelManager{
                 tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
                 tempRect.physicsBody?.isDynamic = false
                 tempRect.physicsBody?.categoryBitMask = CollisionMask.finish
+                tempRect.physicsBody?.collisionBitMask = CollisionMask.none
+            
+            case "G":
+                tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
+                tempRect.physicsBody?.isDynamic = false
+                tempRect.physicsBody?.categoryBitMask = CollisionMask.gate
                 tempRect.physicsBody?.collisionBitMask = CollisionMask.none
             
             default:

@@ -19,8 +19,8 @@ class GateSprite : SKShapeNode{
     let colorArrayIndex = 2;//which color to draw
     
     // MARK: - Initialization
-    init(size:CGSize, fillColor:SKColor, strokeColor: SKColor){
-        self.size = size
+    init(fillColor:SKColor, strokeColor: SKColor){
+        self.size = CGSize(width: <#T##CGFloat#>, height: <#T##CGFloat#>)
         super.init()
         
         //drawing the rectangle with a centered origin.

@@ -15,6 +15,8 @@ class RectangleSprite : SKShapeNode{
     var delta:CGFloat = 400.0 //Magnitude of vector per second
     var health:Int = 2//amount of times to be hit until destroyed
     let size:CGSize
+    let button:Bool = false
+    var gates:[RectangleSprite] = [RectangleSprite]()
     
     let colorArrayIndex = 2;//which color to draw
     
