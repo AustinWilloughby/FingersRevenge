@@ -22,6 +22,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     var playerSprite = PlayerSprite(size: CGSize(width: 200, height: 200), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
     let scoreLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
+    let pauseLabel = SKLabelNode(fontNamed: GameData.font.mainFont)
+    var screenBlocker: RectangleSprite
     
     var tap:UITapGestureRecognizer = UITapGestureRecognizer()
     var pan:UIPanGestureRecognizer = UIPanGestureRecognizer()
@@ -78,6 +80,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         self.totalScore = totalScore
         self.sceneManager = sceneManager
         levelManager = LevelManager()
+        screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.35), strokeColor: SKColor.clear)
         
         super.init(size: size)
         self.scaleMode = scaleMode
@@ -106,7 +109,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         physicsWorld.contactDelegate = self
         
-        playerSprite.position = CGPoint(x: size.width/2, y:size.height/2 - 700)
+        playerSprite.position = CGPoint(x: size.width/2, y:size.height/2)
+        playerSprite.zPosition = 3
         playerSprite.name = "player"
         playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
         playerSprite.physicsBody?.isDynamic = true
@@ -115,6 +119,24 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         
         addChild(playerSprite)
+        
+        pauseLabel.fontColor = SKColor.lightGray
+        pauseLabel.fontSize = GameData.hud.fontSize * 1.3
+        
+        pauseLabel.verticalAlignmentMode = .center
+        pauseLabel.horizontalAlignmentMode = .center
+        pauseLabel.text = "Move Diamond to Begin"
+        pauseLabel.position = playerSprite.position
+        pauseLabel.position.y = pauseLabel.position.y + 225
+        
+        pauseLabel.zPosition = 2
+        addChild(pauseLabel)
+        
+        
+        screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.5), strokeColor: SKColor.clear)
+        screenBlocker.zPosition = 1
+        screenBlocker.position = CGPoint(x: size.width/2, y:size.height/2)
+        addChild(screenBlocker)
         
         setPauseState(gamePaused: true)
     }
@@ -128,8 +150,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     // MARK: - Helpers -
     private func setupUI(){
         playableRect = getPlayableRectPhonePortrait(size: size)
-        let fontSize = GameData.hud.fontSize
-        let fontColor = GameData.hud.fontColorWhite
         let marginH = GameData.hud.marginH
         let marginV = GameData.hud.marginV
         
@@ -139,8 +159,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         healthBar.position = CGPoint(x: 0, y: playableRect.height)
         addChild(healthBar)
         
-        scoreLabel.fontColor = fontColor
-        scoreLabel.fontSize = fontSize
+        scoreLabel.fontColor = GameData.hud.fontColorWhite
+        scoreLabel.fontSize = GameData.hud.fontSize
 
         scoreLabel.verticalAlignmentMode = .top
         scoreLabel.horizontalAlignmentMode = .left
@@ -336,11 +356,29 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     func setPauseState(gamePaused: Bool){
         spritesMoving = !gamePaused
         playerSprite.canMove = !gamePaused
-        
         enumerateChildNodes(withName: "projectile", using:{
             node, stop in
             let d = node as! ProjectileSprite
             d.isPaused = gamePaused
         })
+        
+        if(gamePaused == true){
+            if(playerSprite.position.y > playableRect.maxY - 500)
+            {
+                pauseLabel.position.x = playableRect.maxX / 2
+                pauseLabel.position.y = playerSprite.position.y - 225
+            }
+            else{
+                pauseLabel.position.x = playableRect.maxX / 2
+                pauseLabel.position.y = playerSprite.position.y + 225
+            }
+            pauseLabel.fontColor = SKColor.lightGray
+            screenBlocker.fillColor = SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.35)
+        }
+        else{
+            pauseLabel.text = "Move Diamond to Resume"
+            screenBlocker.fillColor = SKColor.clear
+            pauseLabel.fontColor = SKColor.clear
+        }
     }
 }
