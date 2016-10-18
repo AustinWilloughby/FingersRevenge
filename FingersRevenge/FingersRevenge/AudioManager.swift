@@ -14,6 +14,7 @@ import AVFoundation
 var backgroundMusicPlayer = AVAudioPlayer()
 var arrayOfPlayers: [AVAudioPlayer] = [AVAudioPlayer]()
 
+//Play background audio
 func playBackgroundMusic(filename: String){
     let url = Bundle.main.url(forResource: filename, withExtension: nil)
     guard let newURL = url else{
@@ -31,6 +32,7 @@ func playBackgroundMusic(filename: String){
     }
 }
 
+//Play nail clip audio
 func playNailClip(){
     let fx = Bundle.main.url(forResource: "nailClip.mp3", withExtension: nil)
     

@@ -21,6 +21,7 @@ class LevelManager{
     }
     
     
+    //Load an array of rectanglesprites from a map identifier
     func loadMap(map:String)->[RectangleSprite]{
         var chunkMap:[String] = map.characters.split{$0 == ","}.map(String.init)
         
@@ -45,6 +46,7 @@ class LevelManager{
     }
     
     
+    //Load a chunk from a map string[], give starting height to know where it is in the world
     private func loadChunk(map:[String], startingHeight: Int)->(newChunk: [RectangleSprite], height: Int){
         var currentLine = map[0]
         let xSize: Int = tilesAcross
@@ -101,7 +103,7 @@ class LevelManager{
     }
     
     
-    
+    //Handle generating the rectangle information
     func generateRectDetails(fill: SKColor, stroke: SKColor, name: String, xValue: Int, yValue: Int, startHeight: Int, elementID: String) -> RectangleSprite
     {
         let tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: fill, strokeColor: stroke)
@@ -182,10 +184,12 @@ class LevelManager{
         return SKColor(hue: 0, saturation: 0, brightness: l, alpha: 1)
     }
     
+    //Get a random chunk back
     func randomChunk() -> [RectangleSprite]{
         return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 20))),startingHeight: 1920).0
     }
     
+    //Get the chunk at a given index
     func getChunkAtIndex(chunk: String) -> [String]{
         var levelChunk: [String]
         switch(chunk){
@@ -247,6 +251,7 @@ class LevelManager{
         return levelChunk
     }
 
+    //Get the level at index
     func getLevelAtIndex(index: Int) -> String{
         switch index{
             case 1:
@@ -258,11 +263,13 @@ class LevelManager{
         }
     }
 
+    //Generate random number
     func randRange (lower: UInt32 , upper: UInt32) -> UInt32 {
         return lower + arc4random_uniform(upper - lower + 1)
     }
 }
 
+//Maps
 struct LevelMaps{
     static let one :String = "1,1,2,2,3,4,5,5"
     static let two :String = "6,7,8,9,10,10,11,11,12,13,12,13"

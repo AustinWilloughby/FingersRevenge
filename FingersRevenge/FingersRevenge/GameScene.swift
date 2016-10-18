@@ -95,8 +95,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     // MARK: - Lifecycle -
     override func didMove(to view: SKView){
         setupUI()
-        //makeSprites(howMany: 1)
         
+        //Set up everything on the screen
         tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
         tap.delegate = self
         
@@ -190,6 +190,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
+        //If the game is stil progressing, load the right level. Otherwise start the first chunk of endless
         if(GameData.level >= 4){
             //Endless start
             var level:[RectangleSprite] = levelManager.randomChunk()
@@ -206,6 +207,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
     }
     
+    //Calculate time since last cycle
     func calculateDeltaTime(currentTime: TimeInterval){
         if lastUpdateTime > 0 {
             dt = currentTime - lastUpdateTime
@@ -216,6 +218,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         lastUpdateTime = currentTime
     }
     
+    //Move all of the sprites
     func moveSprites(dt:CGFloat){
         if spritesMoving{
             enumerateChildNodes(withName: "projectile", using: {
@@ -232,6 +235,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 o.update(dt: dt)
             })
             
+            //If there are no more obstacles, generate new ones (for endless mode)
             if(count <= 0){
                 var level:[RectangleSprite] = levelManager.randomChunk()
                 for i in 0 ..< level.count{
@@ -241,6 +245,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
     }
     
+    //Unpause actions
     func unpauseSprites (){
         let unpauseAction = SKAction.sequence([
             SKAction.wait(forDuration: 0.5),
@@ -258,6 +263,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     // MARK: - Actions -
     func panDetected(_ sender:UIPanGestureRecognizer) {
+        //Handle gesture recognition
         sender.maximumNumberOfTouches = 1; // programming
         if sender.state == .began{
             var touchLocation = sender.location(in: sender.view)
@@ -288,6 +294,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
     }
     
+    //handle tapping
     func tapDetected(_ sender:UITapGestureRecognizer){
         if spritesMoving == true{
             if sender.state == .ended{
@@ -417,6 +424,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
     }
     
+    //pause or unpause
     func setPauseState(gamePaused: Bool){
         spritesMoving = !gamePaused
         playerSprite.canMove = !gamePaused

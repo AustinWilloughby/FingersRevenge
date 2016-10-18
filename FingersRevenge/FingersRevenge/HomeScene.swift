@@ -25,6 +25,7 @@ class HomeScene: SKScene {
         fatalError("init(coder:) has not been inplemented")
     }
     
+    //Set up scene
     override func didMove(to view: SKView) {
         backgroundColor = GameData.scene.backgroundColor
         let fingerLogo = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "fingersLogo")))

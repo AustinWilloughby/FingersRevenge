@@ -6,6 +6,7 @@
 //  Copyright © 2016 Austin Willoughby / Peter Lockhart. All rights reserved.
 //
 
+//This stores all of the level "maps" for quick use and access
 import Foundation
 
 struct LevelChunks{

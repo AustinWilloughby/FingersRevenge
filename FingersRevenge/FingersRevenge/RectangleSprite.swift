@@ -35,14 +35,6 @@ class RectangleSprite : SKShapeNode{
         path = pathToDraw
         self.fillColor = fillColor
         self.strokeColor = strokeColor
-        
-        //adding physics body
-//        self.physicsBody = SKPhysicsBody(rectangleOf: size)
-//        self.physicsBody?.isDynamic = true
-//        self.physicsBody?.affectedByGravity = false
-//        self.physicsBody?.categoryBitMask = CollisionMask.wall
-//        self.physicsBody?.contactTestBitMask = CollisionMask.projectile
-//        self.physicsBody?.collisionBitMask = CollisionMask.wall
     }
     
     required init?(coder aDecoder: NSCoder){
