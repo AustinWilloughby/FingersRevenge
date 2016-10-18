@@ -56,5 +56,12 @@ struct LevelChunks{
     
     static let five:[String] =
     [
+        "----------",
+        "GGGGGGGGGG",
+        "----------",
+        "----B-----",
+        "----------",
+        "----------"
+        
     ]
 }

@@ -47,6 +47,9 @@ class LevelManager{
                 case "4":
                     levelChunk = LevelChunks.four
                 
+                case "5":
+                    levelChunk = LevelChunks.five
+                
                 default:
                     levelChunk = LevelChunks.end
             }
@@ -66,7 +69,8 @@ class LevelManager{
         var currentLine = map[0]
         let xSize: Int = tilesAcross
         let ySize: Int = map.count
-        
+        var button:RectangleSprite?
+        var gates:[RectangleSprite] = [RectangleSprite]()
         var chunk = [RectangleSprite]()
         
         for y in 0 ..< ySize{
@@ -91,15 +95,27 @@ class LevelManager{
                         chunk.append(tempRect)
                     
                     case "G": //Gate Obstacle
-                        tempRect = generateRectDetails(fill: randomColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "G")
+                        tempRect = generateRectDetails(fill: SKColor.lightGray, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "G")
                         chunk.append(tempRect)
+                        gates.append(tempRect)
+                    
                     case "B": //Button Obstacle
-                        tempRect = generateRectDetails(fill: SKColor.red, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "G")
+                        tempRect = generateRectDetails(fill: SKColor.red, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "B")
+                        chunk.append(tempRect)
+                        tempRect.isButton = true
+                        button = tempRect
+                    
+                    case "U": //Unbreakable rects
+                        tempRect = generateRectDetails(fill: SKColor.darkGray, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "U")
+                        chunk.append(tempRect)
                     
                     default:
                         break
                 }
             }
+        }
+        if(button != nil && gates.count > 0){
+            button?.gates = gates
         }
         return (chunk, startingHeight + (ySize * unitSize))
     }
@@ -148,6 +164,18 @@ class LevelManager{
                 tempRect.physicsBody?.categoryBitMask = CollisionMask.gate
                 tempRect.physicsBody?.collisionBitMask = CollisionMask.none
             
+            case "B":
+                tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
+                tempRect.physicsBody?.isDynamic = false
+                tempRect.physicsBody?.categoryBitMask = CollisionMask.button
+                tempRect.physicsBody?.collisionBitMask = CollisionMask.none
+            
+            case "U":
+                tempRect.physicsBody = SKPhysicsBody.init(polygonFrom: tempRect.path!)
+                tempRect.physicsBody?.isDynamic = false
+                tempRect.physicsBody?.categoryBitMask = CollisionMask.unbreakable
+                tempRect.physicsBody?.collisionBitMask = CollisionMask.none
+            
             default:
                 break
         }
@@ -157,6 +185,6 @@ class LevelManager{
 }
 
 struct LevelMaps{
-    static let one :String = "1,2,3,4,3,2,4,1,3"
+    static let one :String = "5,1,2,3,4,3,2,4,1,3"
     static let two :String = "2,1,3"
 }

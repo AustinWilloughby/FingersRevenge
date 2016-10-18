@@ -15,7 +15,7 @@ class RectangleSprite : SKShapeNode{
     var delta:CGFloat = 400.0 //Magnitude of vector per second
     var health:Int = 2//amount of times to be hit until destroyed
     let size:CGSize
-    let button:Bool = false
+    var isButton:Bool = false
     var gates:[RectangleSprite] = [RectangleSprite]()
     
     let colorArrayIndex = 2;//which color to draw
@@ -69,6 +69,16 @@ class RectangleSprite : SKShapeNode{
             self.physicsBody?.contactTestBitMask = CollisionMask.none
             self.physicsBody?.collisionBitMask = CollisionMask.none
             self.run(SKAction.sequence([SKAction.scale(by: 0.0, duration: 0.2), SKAction.run{ self.removeFromParent() }]))
+        }
+    }
+    
+    func destroyGates(){
+        if(gates.count > 0)
+        {
+            for g in gates{
+                g.takeDamage()
+                g.takeDamage()
+            }
         }
     }
 }

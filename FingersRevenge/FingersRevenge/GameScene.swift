@@ -115,7 +115,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
         playerSprite.physicsBody?.isDynamic = true
         playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
-        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish
+        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.button
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         
         addChild(playerSprite)
@@ -302,7 +302,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             secondBody = contact.bodyA
         }
         
-        //Projectile Collision
+        //Projectile Collision with Destructible Rect
         if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.projectile)){
             if firstBody.node != nil && secondBody.node != nil{
                 let rectangleNode = firstBody.node as! RectangleSprite
@@ -316,7 +316,35 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             }
         }
         
-        if((firstBody.categoryBitMask == CollisionMask.wall) && (secondBody.categoryBitMask == CollisionMask.player)){
+        //Projectile with Button
+        if((firstBody.categoryBitMask == CollisionMask.button) && (secondBody.categoryBitMask == CollisionMask.projectile)){
+            if firstBody.node != nil && secondBody.node != nil{
+                let rectangleNode = firstBody.node as! RectangleSprite
+                let projectileNode = secondBody.node as! ProjectileSprite
+                if(!projectileNode.hit)
+                {
+                    rectangleNode.destroyGates()
+                    rectangleNode.takeDamage()
+                    rectangleNode.takeDamage()
+                }
+                projectileNode.hit = true
+                projectileNode.removeFromParent()
+            }
+        }
+        
+        //Projectile with Gate
+        if((firstBody.categoryBitMask == CollisionMask.gate || firstBody.categoryBitMask == CollisionMask.unbreakable) && (secondBody.categoryBitMask == CollisionMask.projectile))
+        {
+            if(secondBody.node != nil)
+            {
+                let projectileNode = secondBody.node as! ProjectileSprite
+                projectileNode.hit = true
+                projectileNode.removeFromParent()
+            }
+        }
+        
+        //Player collides with obstacles
+        if((firstBody.categoryBitMask == CollisionMask.wall || firstBody.categoryBitMask == CollisionMask.gate || firstBody.categoryBitMask == CollisionMask.unbreakable) && (secondBody.categoryBitMask == CollisionMask.player)){
             
             playerHealth -= 1
             if(playerHealth <= 0)
@@ -329,6 +357,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             }
         }
         
+        //Player Colliding with Finish Line
         if((firstBody.categoryBitMask == CollisionMask.player) && (secondBody.categoryBitMask == CollisionMask.finish)){
             sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
         }
