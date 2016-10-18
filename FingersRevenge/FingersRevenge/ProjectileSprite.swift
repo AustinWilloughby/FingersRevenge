@@ -27,7 +27,7 @@ class ProjectileSprite: SKSpriteNode{
         self.physicsBody?.isDynamic = true
         self.physicsBody?.affectedByGravity = false
         self.physicsBody?.categoryBitMask = CollisionMask.projectile
-        self.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.button | CollisionMask.gate
+        self.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.button | CollisionMask.gate | CollisionMask.unbreakable
         self.physicsBody?.collisionBitMask = CollisionMask.projectile
         self.physicsBody?.usesPreciseCollisionDetection = true
     }

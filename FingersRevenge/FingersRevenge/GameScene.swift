@@ -115,7 +115,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
         playerSprite.physicsBody?.isDynamic = true
         playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
-        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.button
+        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.unbreakable
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         
         addChild(playerSprite)

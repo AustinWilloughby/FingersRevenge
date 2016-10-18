@@ -83,7 +83,7 @@ class LevelManager{
                 switch currentLine[index]
                 {
                     case "O": //Generic obstacle
-                        tempRect = generateRectDetails(fill: randomColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "O")
+                        tempRect = generateRectDetails(fill: randomGreenColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "O")
                         chunk.append(tempRect)
                     
                     case "L": //Finish line (graphic)
@@ -95,7 +95,7 @@ class LevelManager{
                         chunk.append(tempRect)
                     
                     case "G": //Gate Obstacle
-                        tempRect = generateRectDetails(fill: SKColor.lightGray, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "G")
+                        tempRect = generateRectDetails(fill: randomLightGrayColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "G")
                         chunk.append(tempRect)
                         gates.append(tempRect)
                     
@@ -106,7 +106,7 @@ class LevelManager{
                         button = tempRect
                     
                     case "U": //Unbreakable rects
-                        tempRect = generateRectDetails(fill: SKColor.darkGray, stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "U")
+                        tempRect = generateRectDetails(fill: randomDarkGrayColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "U")
                         chunk.append(tempRect)
                     
                     default:
@@ -120,18 +120,7 @@ class LevelManager{
         return (chunk, startingHeight + (ySize * unitSize))
     }
     
-    func randomColor() -> SKColor{
-        var h:CGFloat, s:CGFloat, l:CGFloat
-        let hRange:CGFloat = 140.0 - 90.0
-        let sRange:CGFloat = 100.0 - 50.0
-        let lRange:CGFloat = 60.0 - 40.0
-        h = (90.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * hRange)))/3.6/100.0
-//        s = (50.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * sRange)))/100.0
-        s = 100.0/100.0
-        l = (60.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
-        
-        return SKColor(hue: h, saturation: s, brightness: l, alpha: 1)
-    }
+    
     
     func generateRectDetails(fill: SKColor, stroke: SKColor, name: String, xValue: Int, yValue: Int, startHeight: Int, elementID: String) -> RectangleSprite
     {
@@ -181,6 +170,36 @@ class LevelManager{
         }
         
         return tempRect
+    }
+    
+    //MARK: Random Colors
+    func randomGreenColor() -> SKColor{
+        var h:CGFloat, s:CGFloat, l:CGFloat
+        let hRange:CGFloat = 140.0 - 90.0
+        let sRange:CGFloat = 100.0 - 50.0
+        let lRange:CGFloat = 60.0 - 40.0
+        h = (90.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * hRange)))/3.6/100.0
+        //        s = (50.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * sRange)))/100.0
+        s = 100.0/100.0
+        l = (60.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
+        
+        return SKColor(hue: h, saturation: s, brightness: l, alpha: 1)
+    }
+    
+    func randomLightGrayColor() -> SKColor{
+        var l:CGFloat
+        let lRange:CGFloat = 85.0 - 60.0
+        l = (60.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
+        
+        return SKColor(hue: 0, saturation: 0, brightness: l, alpha: 1)
+    }
+    
+    func randomDarkGrayColor() -> SKColor{
+        var l:CGFloat
+        let lRange:CGFloat = 45.0 - 25.0
+        l = (25.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
+        
+        return SKColor(hue: 0, saturation: 0, brightness: l, alpha: 1)
     }
 }
 
