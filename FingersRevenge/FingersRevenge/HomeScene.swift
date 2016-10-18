@@ -13,6 +13,7 @@ class HomeScene: SKScene {
     let sceneManager:GameViewController
     let button:SKLabelNode = SKLabelNode(fontNamed: GameData.font.mainFont)
     
+    
     // MARK: - Initialization -
     init(size: CGSize, scaleMode:SKSceneScaleMode, sceneManager:GameViewController){
         self.sceneManager = sceneManager
@@ -26,23 +27,22 @@ class HomeScene: SKScene {
     
     override func didMove(to view: SKView) {
         backgroundColor = GameData.scene.backgroundColor
-        let label = SKLabelNode(fontNamed: "AvenirNextCondensed-DemiBoldItalic")
+        let fingerLogo = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "fingersLogo")))
         let label2 = SKLabelNode(fontNamed: "AvenirNextCondensed-HeavyItalic")
-        label.text = "Fingers"
+        
+        fingerLogo.size = CGSize(width: fingerLogo.size.width * 0.9 , height: fingerLogo.size.height * 0.9)
+        
+        fingerLogo.position = CGPoint(x:size.width/2, y:size.height/2 + 400)
+        
         label2.text = "Revenge"
-        
-        label.fontSize = 200
         label2.fontSize = 250
-        
-        label.position = CGPoint(x:size.width/2, y:size.height/2 + 300)
         label2.position = CGPoint(x:size.width/2, y:size.height/2 + 100)
         
-        label.zPosition = 1
+        fingerLogo.zPosition = 1
         label2.zPosition = 1
-        addChild(label)
-        addChild(label2)
         
-        // label3 was an image - I'll let you do that on your own
+        addChild(fingerLogo)
+        addChild(label2)
         
         let label4 = SKLabelNode(fontNamed: GameData.font.mainFont)
         label4.text = "Place Finger on Diamond To Play"
