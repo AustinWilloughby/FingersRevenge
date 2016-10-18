@@ -50,6 +50,42 @@ class LevelManager{
                 case "5":
                     levelChunk = LevelChunks.five
                 
+            case "6":
+                levelChunk = LevelChunks.six
+                
+            case "7":
+                levelChunk = LevelChunks.seven
+                
+            case "8":
+                levelChunk = LevelChunks.eight
+                
+            case "9":
+                levelChunk = LevelChunks.nine
+                
+            case "10":
+                levelChunk = LevelChunks.ten
+                
+            case "11":
+                levelChunk = LevelChunks.eleven
+                
+            case "12":
+                levelChunk = LevelChunks.twelve
+                
+            case "13":
+                levelChunk = LevelChunks.thirteen
+                
+            case "14":
+                levelChunk = LevelChunks.fourteen
+                
+            case "15":
+                levelChunk = LevelChunks.fifteen
+                
+            case "16":
+                levelChunk = LevelChunks.sixteen
+                
+            case "17":
+                levelChunk = LevelChunks.seventeen
+                
                 default:
                     levelChunk = LevelChunks.end
             }
@@ -188,22 +224,23 @@ class LevelManager{
     
     func randomLightGrayColor() -> SKColor{
         var l:CGFloat
-        let lRange:CGFloat = 85.0 - 60.0
-        l = (60.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
+        let lRange:CGFloat = 90.0 - 70.0
+        l = (70.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
         
         return SKColor(hue: 0, saturation: 0, brightness: l, alpha: 1)
     }
     
     func randomDarkGrayColor() -> SKColor{
         var l:CGFloat
-        let lRange:CGFloat = 45.0 - 25.0
-        l = (25.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
+        let lRange:CGFloat = 40.0 - 20.0
+        l = (20.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
         
         return SKColor(hue: 0, saturation: 0, brightness: l, alpha: 1)
     }
 }
 
 struct LevelMaps{
-    static let one :String = "5,1,2,3,4,3,2,4,1,3"
-    static let two :String = "2,1,3"
+    static let one :String = "1,1,2,2,3,4,5,5"
+    static let two :String = "6,7,8,9,10,10,11,11,12,13,12,13"
+    static let three :String = "14,14,15,15,16,16,17,17"
 }
