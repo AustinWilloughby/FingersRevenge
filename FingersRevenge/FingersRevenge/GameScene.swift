@@ -190,7 +190,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         scoreLabel.zPosition = 2
         addChild(scoreLabel)
         
-        if(GameData.level >= 1){
+        if(GameData.level >= 4){
             //Endless start
             var level:[RectangleSprite] = levelManager.randomChunk()
             for i in 0 ..< level.count{

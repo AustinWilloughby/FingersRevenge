@@ -183,7 +183,7 @@ class LevelManager{
     }
     
     func randomChunk() -> [RectangleSprite]{
-        return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 5))),startingHeight: 1920).0
+        return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 20))),startingHeight: 1920).0
     }
     
     func getChunkAtIndex(chunk: String) -> [String]{
@@ -249,10 +249,12 @@ class LevelManager{
 
     func getLevelAtIndex(index: Int) -> String{
         switch index{
-        case 1:
-            return LevelMaps.one
-        default:
-            return LevelMaps.two
+            case 1:
+                return LevelMaps.one
+            case 2:
+                return LevelMaps.two
+            default:
+                return LevelMaps.three
         }
     }
 
