@@ -33,27 +33,7 @@ class LevelManager{
         
         var currentStartHeight: Int = startHeight
         for i in 0 ..< chunkMap.count{
-            var levelChunk: [String]
-            switch(chunkMap[i]){
-                case "1":
-                    levelChunk = LevelChunks.one
-                
-                case "2":
-                    levelChunk = LevelChunks.two
-                
-                case "3":
-                    levelChunk = LevelChunks.three
-                
-                case "4":
-                    levelChunk = LevelChunks.four
-                
-                case "5":
-                    levelChunk = LevelChunks.five
-                
-                default:
-                    levelChunk = LevelChunks.end
-            }
-            
+            let levelChunk: [String] = getChunkAtIndex(chunk: chunkMap[i])
             let chunkInfo = loadChunk(map: levelChunk, startingHeight: currentStartHeight)
             let currentChunk = chunkInfo.0
             currentStartHeight = chunkInfo.1
@@ -200,6 +180,47 @@ class LevelManager{
         l = (25.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * lRange)))/100.0
         
         return SKColor(hue: 0, saturation: 0, brightness: l, alpha: 1)
+    }
+    
+    func randomChunk() -> [RectangleSprite]{
+        return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 5))),startingHeight: 1920).0
+    }
+    
+    func getChunkAtIndex(chunk: String) -> [String]{
+        var levelChunk: [String]
+        switch(chunk){
+        case "1":
+            levelChunk = LevelChunks.one
+            
+        case "2":
+            levelChunk = LevelChunks.two
+            
+        case "3":
+            levelChunk = LevelChunks.three
+            
+        case "4":
+            levelChunk = LevelChunks.four
+            
+        case "5":
+            levelChunk = LevelChunks.five
+            
+        default:
+            levelChunk = LevelChunks.end
+        }
+        return levelChunk
+    }
+    
+    func getLevelAtIndex(index: Int) -> String{
+        switch index{
+        case 1:
+            return LevelMaps.one
+        default:
+            return LevelMaps.two
+        }
+    }
+    
+    func randRange (lower: UInt32 , upper: UInt32) -> UInt32 {
+        return lower + arc4random_uniform(upper - lower + 1)
     }
 }
 
