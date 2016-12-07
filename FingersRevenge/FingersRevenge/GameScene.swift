@@ -46,6 +46,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var endlessChunkOffset:CGFloat = 50.0
     var finishHasSpawned: Bool = false
     
+    private var shaders = [SKShader]()
+    private var shaderTitles = [String]()
+    var shaderIndex:Int = 0
+    
     
     var healthBar:SKSpriteNode = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "ThreeHealth")))
     
@@ -242,6 +246,16 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         screenBlocker.zPosition = 1
         screenBlocker.position = CGPoint(x: size.width/2, y:size.height/2)
         addChild(screenBlocker)
+        
+        let background = SKSpriteNode(color: UIColor.black, size: CGSize(width: self.size.width, height: self.size.height))
+        //background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        background.zPosition = -10
+        background.name = "background"
+        addChild(background)
+        
+        loadShaders()
+        applyShaders()
         
         setPauseState(gamePaused: true)
     }
@@ -458,5 +472,29 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 }
             }
         }
+    }
+    
+    // MARK: - Shaders -
+    func loadShaders(){
+        // create shaders
+        let shaderNames = ["pixelation"]
+        for name in shaderNames{
+            shaders.append(SKShader(fileNamed: name))
+            shaderTitles.append(name)
+        }
+    }
+    
+    func applyShaders(){
+        
+        if let background = childNode(withName: "background"){
+            let currentShader = shaders[shaderIndex]
+            let spriteSize = vector_float2(Float(background.frame.size.width),Float(background.frame.size.height))
+            currentShader.uniforms = [SKUniform(name: "u_sprite_size", vectorFloat2: spriteSize)]
+            (background as! SKSpriteNode).shader = currentShader
+            print("if let succeeded")
+        }
+        
+        //let frame = self.frame
+        //createToast(text: shaderTitles[index], color:UIColor.red, location: CGPoint(x:frame.midX,y:frame.midY * 1.25))
     }
 }
