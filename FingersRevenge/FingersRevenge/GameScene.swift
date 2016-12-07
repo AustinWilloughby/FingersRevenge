@@ -297,7 +297,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         addChild(scoreLabel)
         
         //If the game is stil progressing, load the right level. Otherwise start the first chunk of endless
-        if(GameData.level >= 0){
+        if(GameData.level >= 4){
             //Endless start
             chunkCount += 1
             var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks)
