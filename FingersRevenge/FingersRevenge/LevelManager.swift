@@ -108,6 +108,7 @@ class LevelManager{
     {
         let tempRect = RectangleSprite(size: CGSize(width: unitSize, height: unitSize), fillColor: fill, strokeColor: stroke)
         tempRect.name = name
+        tempRect.elementID = elementID
         let x = (xValue * unitSize) + (unitSize / 2)
         let y = startHeight + (yValue * unitSize)
         tempRect.position = CGPoint(x: CGFloat(x), y: CGFloat(y))

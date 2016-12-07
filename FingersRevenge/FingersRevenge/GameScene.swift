@@ -33,7 +33,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var dt: TimeInterval = 0
     var spritesMoving = true
     
-    //obstacl spawning ivars
+    //obstacle spawning ivars
     var obstacleInterval = 1.5
     var obstacleSpawnTimer = 1.5
     
@@ -43,6 +43,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var playerTouch:UITouch?
     
     var levelManager:LevelManager
+    var endlessChunkOffset:CGFloat = 50.0
+    var finishHasSpawned: Bool = false
     
     
     var healthBar:SKSpriteNode = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "ThreeHealth")))
@@ -90,6 +92,95 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     required init?(coder aDecoder: NSCoder){
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func panDetected(_ sender:UIPanGestureRecognizer) {
+        //Handle gesture recognition
+        sender.maximumNumberOfTouches = 1; // programming
+        if sender.state == .began{
+            var touchLocation = sender.location(in: sender.view)
+            touchLocation = self.convertPoint(fromView: touchLocation)
+            let touchedNodes = self.nodes(at: touchLocation)
+            for sprite in touchedNodes{
+                if let name = sprite.name{
+                    if name == "player"
+                    {
+                        playerSprite.changeColor(strokeColor: SKColor.clear, fillColor: SKColor.clear)
+                        setPauseState(gamePaused: false)
+                    }
+                }
+            }
+        }
+        if(sender.state == .changed){
+            if(playerSprite.canMove)
+            {
+                var touchLocation = sender.location(in: sender.view)
+                touchLocation = self.convertPoint(fromView: touchLocation)
+                playerSprite.position = touchLocation
+                
+            }
+        }
+        if(sender.state == .ended){
+            playerSprite.changeColor(strokeColor: SKColor.white, fillColor: SKColor.lightGray)
+            setPauseState(gamePaused: true)
+        }
+    }
+    
+    //handle tapping
+    func tapDetected(_ sender:UITapGestureRecognizer){
+        if spritesMoving == true{
+            if sender.state == .ended{
+                var touchLocation = sender.location(in: sender.view)
+                touchLocation = self.convertPoint(fromView: touchLocation)
+                let s = ProjectileSprite(size: SKTexture(image: #imageLiteral(resourceName: "NailClipping")).size())
+                s.name = "projectile"
+                s.position = playerSprite.position
+                s.zPosition = CGFloat(-1)
+                let offset = touchLocation - s.position
+                addChild(s)
+                let direction = offset.normalized()
+                let shootAmount = direction * 2300
+                let realDest = shootAmount + s.position
+                s.rotateToDirection(dest: realDest)
+                let actionMove = SKAction.move(to: realDest, duration: 0.5)
+                let actionMoveDone = SKAction.removeFromParent()
+                s.run(SKAction.sequence([actionMove, actionMoveDone]))
+                self.levelScore -= 1
+                
+                run(SKAction.playSoundFileNamed("nailClip.mp3", waitForCompletion: true))
+                playNailClip()
+            }
+        }
+    }
+    
+    func setPauseState(gamePaused: Bool){
+        spritesMoving = !gamePaused
+        playerSprite.canMove = !gamePaused
+        enumerateChildNodes(withName: "projectile", using:{
+            node, stop in
+            let d = node as! ProjectileSprite
+            d.isPaused = gamePaused
+        })
+        
+        if(gamePaused == true){
+            if(playerSprite.position.y > playableRect.maxY - 500)
+            {
+                pauseLabel.position.x = playableRect.maxX / 2
+                pauseLabel.position.y = playerSprite.position.y - 225
+            }
+            else{
+                pauseLabel.position.x = playableRect.maxX / 2
+                pauseLabel.position.y = playerSprite.position.y + 225
+            }
+            pauseLabel.fontColor = SKColor.lightGray
+            screenBlocker.fillColor = SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
+        }
+        else{
+            shootLabel.isHidden = true
+            pauseLabel.text = "Move Diamond to Resume"
+            screenBlocker.fillColor = SKColor.clear
+            pauseLabel.fontColor = SKColor.clear
+        }
     }
     
     // MARK: - Lifecycle -
@@ -227,17 +318,22 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 s.update(dt: dt)
             })
             
-            var count:Int = 0
-            enumerateChildNodes(withName: "obstacle", using:{
+            var offTopCount:Int = 0
+            enumerateChildNodes(withName: "obstacle", using: {
                 node, stop in
-                count += 1
                 let o = node as! RectangleSprite
                 o.update(dt: dt)
+                if o.position.y > self.size.height - self.endlessChunkOffset
+                {
+                    offTopCount += 1
+                }
+                if o.elementID == "F"{
+                    self.finishHasSpawned = true
+                }
             })
             
-            //If there are no more obstacles, generate new ones (for endless mode)
-            if(count <= 0){
-                var level:[RectangleSprite] = levelManager.randomChunk()
+            if offTopCount <= 0 && !finishHasSpawned{
+                var level:[RectangleSprite] = self.levelManager.randomChunk()
                 for i in 0 ..< level.count{
                     addChild(level[i])
                 }
@@ -256,69 +352,9 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     // MARK: - Events -
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if(playerSprite.canMove)
-        {
-        }
     }
     
     // MARK: - Actions -
-    func panDetected(_ sender:UIPanGestureRecognizer) {
-        //Handle gesture recognition
-        sender.maximumNumberOfTouches = 1; // programming
-        if sender.state == .began{
-            var touchLocation = sender.location(in: sender.view)
-            touchLocation = self.convertPoint(fromView: touchLocation)
-            let touchedNodes = self.nodes(at: touchLocation)
-            for sprite in touchedNodes{
-                if let name = sprite.name{
-                    if name == "player"
-                    {
-                        playerSprite.changeColor(strokeColor: SKColor.clear, fillColor: SKColor.clear)
-                        setPauseState(gamePaused: false)
-                    }
-                }
-            }
-        }
-        if(sender.state == .changed){
-            if(playerSprite.canMove)
-            {
-                var touchLocation = sender.location(in: sender.view)
-                touchLocation = self.convertPoint(fromView: touchLocation)
-                playerSprite.position = touchLocation
-                
-            }
-        }
-        if(sender.state == .ended){
-            playerSprite.changeColor(strokeColor: SKColor.white, fillColor: SKColor.lightGray)
-            setPauseState(gamePaused: true)
-        }
-    }
-    
-    //handle tapping
-    func tapDetected(_ sender:UITapGestureRecognizer){
-        if spritesMoving == true{
-            if sender.state == .ended{
-                var touchLocation = sender.location(in: sender.view)
-                touchLocation = self.convertPoint(fromView: touchLocation)
-                let s = ProjectileSprite(size: SKTexture(image: #imageLiteral(resourceName: "NailClipping")).size())
-                s.name = "projectile"
-                s.position = playerSprite.position
-                s.zPosition = CGFloat(-1)
-                let offset = touchLocation - s.position
-                addChild(s)
-                let direction = offset.normalized()
-                let shootAmount = direction * 2300
-                let realDest = shootAmount + s.position
-                s.rotateToDirection(dest: realDest)
-                let actionMove = SKAction.move(to: realDest, duration: 0.5)
-                let actionMoveDone = SKAction.removeFromParent()
-                s.run(SKAction.sequence([actionMove, actionMoveDone]))
-                self.levelScore -= 1
-                
-                playNailClip()
-            }
-        }
-    }
     
     func gestureRecognizer(_ gestureRecognizer:UIGestureRecognizer, shouldRecognizeSimultaneouslyWith: UIGestureRecognizer) -> Bool{
         return (gestureRecognizer == tap && shouldRecognizeSimultaneouslyWith == pan)
@@ -417,41 +453,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 obstacleSpawnTimer = obstacleSpawnTimer - dt
                 if(obstacleSpawnTimer <= 0)
                 {
-                    levelScore += 100;
+                    levelScore += 100
                     obstacleSpawnTimer = obstacleInterval
                 }
             }
-        }
-    }
-    
-    //pause or unpause
-    func setPauseState(gamePaused: Bool){
-        spritesMoving = !gamePaused
-        playerSprite.canMove = !gamePaused
-        enumerateChildNodes(withName: "projectile", using:{
-            node, stop in
-            let d = node as! ProjectileSprite
-            d.isPaused = gamePaused
-        })
-        
-        if(gamePaused == true){
-            if(playerSprite.position.y > playableRect.maxY - 500)
-            {
-                pauseLabel.position.x = playableRect.maxX / 2
-                pauseLabel.position.y = playerSprite.position.y - 225
-            }
-            else{
-                pauseLabel.position.x = playableRect.maxX / 2
-                pauseLabel.position.y = playerSprite.position.y + 225
-            }
-            pauseLabel.fontColor = SKColor.lightGray
-            screenBlocker.fillColor = SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
-        }
-        else{
-            shootLabel.isHidden = true
-            pauseLabel.text = "Move Diamond to Resume"
-            screenBlocker.fillColor = SKColor.clear
-            pauseLabel.fontColor = SKColor.clear
         }
     }
 }

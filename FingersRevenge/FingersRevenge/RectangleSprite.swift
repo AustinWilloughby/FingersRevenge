@@ -17,6 +17,7 @@ class RectangleSprite : SKShapeNode{
     let size:CGSize
     var isButton:Bool = false
     var gates:[RectangleSprite] = [RectangleSprite]()
+    var elementID:String = "O"
     
     let colorArrayIndex = 2;//which color to draw
     
@@ -45,7 +46,7 @@ class RectangleSprite : SKShapeNode{
     {
         velocity = fwd * delta
         position = position + velocity * dt
-        if(position.y < -size.height/2){
+        if(position.y < -size.height){
             self.removeFromParent()
         }
         
