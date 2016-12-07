@@ -50,6 +50,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     private var shaderTitles = [String]()
     var shaderIndex:Int = 0
     
+    var chunkCount:Int = 0
+    var maxChunks:Int = 20
     
     var healthBar:SKSpriteNode = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "ThreeHealth")))
     
@@ -151,7 +153,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 s.run(SKAction.sequence([actionMove, actionMoveDone]))
                 self.levelScore -= 1
                 
-                run(SKAction.playSoundFileNamed("nailClip.mp3", waitForCompletion: true))
                 playNailClip()
             }
         }
@@ -296,9 +297,10 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         addChild(scoreLabel)
         
         //If the game is stil progressing, load the right level. Otherwise start the first chunk of endless
-        if(GameData.level >= 4){
+        if(GameData.level >= 0){
             //Endless start
-            var level:[RectangleSprite] = levelManager.randomChunk()
+            chunkCount += 1
+            var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks)
             for i in 0 ..< level.count{
                 addChild(level[i])
             }
@@ -347,7 +349,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             })
             
             if offTopCount <= 0 && !finishHasSpawned{
-                var level:[RectangleSprite] = self.levelManager.randomChunk()
+                chunkCount += 1
+                var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks)
                 for i in 0 ..< level.count{
                     addChild(level[i])
                 }

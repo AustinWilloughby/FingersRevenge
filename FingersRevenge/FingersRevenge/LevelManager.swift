@@ -47,7 +47,7 @@ class LevelManager{
     
     
     //Load a chunk from a map string[], give starting height to know where it is in the world
-    private func loadChunk(map:[String], startingHeight: Int)->(newChunk: [RectangleSprite], height: Int){
+    func loadChunk(map:[String], startingHeight: Int)->(newChunk: [RectangleSprite], height: Int){
         var currentLine = map[0]
         let xSize: Int = tilesAcross
         let ySize: Int = map.count
@@ -186,8 +186,11 @@ class LevelManager{
     }
     
     //Get a random chunk back
-    func randomChunk() -> [RectangleSprite]{
-        return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 20))),startingHeight: 1920).0
+    func randomChunk(currentChunk: Int, endChunk: Int) -> [RectangleSprite]{
+        if(currentChunk > endChunk){
+            return loadChunk(map: LevelChunks.end, startingHeight: 1920).0
+        }
+        return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 17))),startingHeight: 1920).0
     }
     
     //Get the chunk at a given index
