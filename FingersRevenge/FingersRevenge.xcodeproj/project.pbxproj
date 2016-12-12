@@ -19,6 +19,7 @@
 		3F1427B91D918D450032A1B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427B81D918D450032A1B1 /* Assets.xcassets */; };
 		3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427BA1D918D450032A1B1 /* LaunchScreen.storyboard */; };
 		3F223F331D988A9F00434A39 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F223F321D988A9F00434A39 /* PlayerSprite.swift */; };
+		3F2576771DFF4AE1006CE71D /* pixelation.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 3F2576761DFF4AE1006CE71D /* pixelation.fsh */; };
 		3F5AC85A1D9498F800835E0F /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8561D9498F800835E0F /* CGFloat+Extensions.swift */; };
 		3F5AC85B1D9498F800835E0F /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8571D9498F800835E0F /* CGPoint+Extensions.swift */; };
 		3F5AC85C1D9498F800835E0F /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8581D9498F800835E0F /* GameData.swift */; };
@@ -26,7 +27,6 @@
 		3F5AC85F1D94A19600835E0F /* LevelFinishScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC85E1D94A19600835E0F /* LevelFinishScene.swift */; };
 		3F5AC8611D94A1AC00835E0F /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8601D94A1AC00835E0F /* GameOverScene.swift */; };
 		3F5AC8631D94A24700835E0F /* LevelResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8621D94A24700835E0F /* LevelResults.swift */; };
-		3F5AE5211DF8CE8A004CEC1C /* pixelation.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 3F5AE5201DF8CE8A004CEC1C /* pixelation.fsh */; };
 		3F64F89C1D985C470035C17A /* RectangleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F64F89B1D985C470035C17A /* RectangleSprite.swift */; };
 		3F8216061D947127000A0491 /* HomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216051D947127000A0491 /* HomeScene.swift */; };
 		3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216071D9479D0000A0491 /* DiamondSprite.swift */; };
@@ -52,6 +52,7 @@
 		3F1427BB1D918D450032A1B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F1427BD1D918D450032A1B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F223F321D988A9F00434A39 /* PlayerSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
+		3F2576761DFF4AE1006CE71D /* pixelation.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = pixelation.fsh; sourceTree = "<group>"; };
 		3F5AC8561D9498F800835E0F /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		3F5AC8571D9498F800835E0F /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		3F5AC8581D9498F800835E0F /* GameData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
@@ -59,7 +60,6 @@
 		3F5AC85E1D94A19600835E0F /* LevelFinishScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelFinishScene.swift; sourceTree = "<group>"; };
 		3F5AC8601D94A1AC00835E0F /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		3F5AC8621D94A24700835E0F /* LevelResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelResults.swift; sourceTree = "<group>"; };
-		3F5AE5201DF8CE8A004CEC1C /* pixelation.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = pixelation.fsh; sourceTree = SOURCE_ROOT; };
 		3F64F89B1D985C470035C17A /* RectangleSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RectangleSprite.swift; sourceTree = "<group>"; };
 		3F8216051D947127000A0491 /* HomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeScene.swift; sourceTree = "<group>"; };
 		3F8216071D9479D0000A0491 /* DiamondSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondSprite.swift; sourceTree = "<group>"; };
@@ -124,7 +124,7 @@
 		3F5AE51F1DF8CE34004CEC1C /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				3F5AE5201DF8CE8A004CEC1C /* pixelation.fsh */,
+				3F2576761DFF4AE1006CE71D /* pixelation.fsh */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -213,7 +213,7 @@
 				TargetAttributes = {
 					3F1427A71D918D440032A1B1 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = V3GKW447FR;
+						DevelopmentTeam = P5F2W7RU5W;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -245,7 +245,7 @@
 				3F1427AE1D918D450032A1B1 /* GameScene.sks in Resources */,
 				3FAE97CF1DB589A500C62A03 /* nailClip.mp3 in Resources */,
 				3F030ED31DB564390099868B /* BackgroundMusic.mp3 in Resources */,
-				3F5AE5211DF8CE8A004CEC1C /* pixelation.fsh in Resources */,
+				3F2576771DFF4AE1006CE71D /* pixelation.fsh in Resources */,
 				3F1427B91D918D450032A1B1 /* Assets.xcassets in Resources */,
 				3FF476BF1DA19E2500D87D5E /* spark.png in Resources */,
 				3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */,
@@ -401,11 +401,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = V3GKW447FR;
+				DEVELOPMENT_TEAM = P5F2W7RU5W;
 				INFOPLIST_FILE = FingersRevenge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sideloadfinger.FingersRevenge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -416,11 +416,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = V3GKW447FR;
+				DEVELOPMENT_TEAM = P5F2W7RU5W;
 				INFOPLIST_FILE = FingersRevenge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sideloadfinger.FingersRevenge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

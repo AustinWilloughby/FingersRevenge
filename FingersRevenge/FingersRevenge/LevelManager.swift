@@ -186,11 +186,16 @@ class LevelManager{
     }
     
     //Get a random chunk back
-    func randomChunk(currentChunk: Int, endChunk: Int) -> [RectangleSprite]{
+    func randomChunk(currentChunk: Int, endChunk: Int, avoidOnly: Bool) -> [RectangleSprite]{
         if(currentChunk > endChunk){
             return loadChunk(map: LevelChunks.end, startingHeight: 1920).0
         }
-        return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 17))),startingHeight: 1920).0
+        if !avoidOnly {
+            return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower: 1, upper: 17))),startingHeight: 1920).0
+        }
+        else{
+            return loadChunk(map: getChunkAtIndex(chunk: String(randRange(lower:101, upper: 110))), startingHeight: 1920).0
+        }
     }
     
     //Get the chunk at a given index
@@ -248,6 +253,36 @@ class LevelManager{
             case "17":
                 levelChunk = LevelChunks.seventeen
             
+            case "101":
+                levelChunk = LevelChunks.aOne //aOne = first avoid map
+            
+            case "102":
+                levelChunk = LevelChunks.aTwo
+            
+            case "103":
+                levelChunk = LevelChunks.aThree
+            
+            case "104":
+                levelChunk = LevelChunks.aFour
+            
+            case "105":
+                levelChunk = LevelChunks.aFive
+            
+            case "106":
+                levelChunk = LevelChunks.aSix
+            
+            case "107":
+                levelChunk = LevelChunks.aSeven
+            
+            case "108":
+                levelChunk = LevelChunks.aEight
+            
+            case "109":
+                levelChunk = LevelChunks.aNine
+            
+            case "110":
+                levelChunk = LevelChunks.aTen
+            
             default:
                 levelChunk = LevelChunks.end
         
@@ -256,14 +291,26 @@ class LevelManager{
     }
 
     //Get the level at index
-    func getLevelAtIndex(index: Int) -> String{
-        switch index{
-            case 1:
-                return LevelMaps.one
-            case 2:
-                return LevelMaps.two
-            default:
-                return LevelMaps.three
+    func getLevelAtIndex(index: Int, avoidOnly: Bool) -> String{
+        if(avoidOnly){
+            switch index{
+                case 1:
+                    return LevelMaps.aOne
+                case 2:
+                    return LevelMaps.aTwo
+                default:
+                    return LevelMaps.aThree
+            }
+        }
+        else{
+            switch index{
+                case 1:
+                    return LevelMaps.one
+                case 2:
+                    return LevelMaps.two
+                default:
+                    return LevelMaps.three
+            }
         }
     }
 
@@ -278,4 +325,8 @@ struct LevelMaps{
     static let one :String = "1,1,2,2,3,4,5,5"
     static let two :String = "6,7,8,9,10,10,11,11,12,13,12,13"
     static let three :String = "14,14,15,15,16,16,17,17"
+    
+    static let aOne :String = "101,102,103,104,105"
+    static let aTwo :String = "106,108,107,110,109"
+    static let aThree :String = "109,110,103,109,101,104"
 }

@@ -31,6 +31,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
+    var speedTimer: TimeInterval = 30
     var spritesMoving = true
     
     //obstacle spawning ivars
@@ -52,6 +53,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     var chunkCount:Int = 0
     var maxChunks:Int = 20
+    
+    var avoidMode:Bool = true
     
     var healthBar:SKSpriteNode = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "ThreeHealth")))
     
@@ -84,7 +87,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     }
     
     // MARK: - Initialization -
-    init(size: CGSize, scaleMode:SKSceneScaleMode, levelNum:Int, totalScore:Int, sceneManager:GameViewController){
+    init(size: CGSize, scaleMode:SKSceneScaleMode, levelNum:Int, totalScore:Int, sceneManager:GameViewController, avoid: Bool){
+        self.avoidMode = avoid
         self.levelNum = levelNum
         self.totalScore = totalScore
         self.sceneManager = sceneManager
@@ -134,26 +138,28 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     //handle tapping
     func tapDetected(_ sender:UITapGestureRecognizer){
-        if spritesMoving == true{
-            if sender.state == .ended{
-                var touchLocation = sender.location(in: sender.view)
-                touchLocation = self.convertPoint(fromView: touchLocation)
-                let s = ProjectileSprite(size: SKTexture(image: #imageLiteral(resourceName: "NailClipping")).size())
-                s.name = "projectile"
-                s.position = playerSprite.position
-                s.zPosition = CGFloat(-1)
-                let offset = touchLocation - s.position
-                addChild(s)
-                let direction = offset.normalized()
-                let shootAmount = direction * 2300
-                let realDest = shootAmount + s.position
-                s.rotateToDirection(dest: realDest)
-                let actionMove = SKAction.move(to: realDest, duration: 0.5)
-                let actionMoveDone = SKAction.removeFromParent()
-                s.run(SKAction.sequence([actionMove, actionMoveDone]))
-                self.levelScore -= 1
+        if avoidMode == false{
+            if spritesMoving == true{
+                if sender.state == .ended{
+                    var touchLocation = sender.location(in: sender.view)
+                    touchLocation = self.convertPoint(fromView: touchLocation)
+                    let s = ProjectileSprite(size: SKTexture(image: #imageLiteral(resourceName: "NailClipping")).size())
+                    s.name = "projectile"
+                    s.position = playerSprite.position
+                    s.zPosition = CGFloat(-1)
+                    let offset = touchLocation - s.position
+                    addChild(s)
+                    let direction = offset.normalized()
+                    let shootAmount = direction * 2300
+                    let realDest = shootAmount + s.position
+                    s.rotateToDirection(dest: realDest)
+                    let actionMove = SKAction.move(to: realDest, duration: 0.5)
+                    let actionMoveDone = SKAction.removeFromParent()
+                    s.run(SKAction.sequence([actionMove, actionMoveDone]))
+                    self.levelScore -= 1
                 
-                playNailClip()
+                    playNailClip()
+                }
             }
         }
     }
@@ -210,6 +216,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         playerSprite.zPosition = 3
         playerSprite.name = "player"
         playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
+        if avoidMode{
+            playerSprite.physicsBody = SKPhysicsBody.init(circleOfRadius: playerSprite.yScale * 40.0)
+        }
+        else{
+            
+            playerSprite.physicsBody = SKPhysicsBody.init(polygonFrom: playerSprite.path!)
+        }
         playerSprite.physicsBody?.isDynamic = true
         playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
         playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.unbreakable
@@ -230,17 +243,19 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         pauseLabel.zPosition = 2
         addChild(pauseLabel)
         
-        shootLabel.fontColor = SKColor.lightGray
-        shootLabel.fontSize = GameData.hud.fontSize * 0.9
+        if avoidMode == false {
+            shootLabel.fontColor = SKColor.lightGray
+            shootLabel.fontSize = GameData.hud.fontSize * 0.9
         
-        shootLabel.verticalAlignmentMode = .center
-        shootLabel.horizontalAlignmentMode = .center
-        shootLabel.text = "Tap With Second Finger to Shoot"
-        shootLabel.position = playerSprite.position
-        shootLabel.position.y = pauseLabel.position.y - 50
+            shootLabel.verticalAlignmentMode = .center
+            shootLabel.horizontalAlignmentMode = .center
+            shootLabel.text = "Tap With Second Finger to Shoot"
+            shootLabel.position = playerSprite.position
+            shootLabel.position.y = pauseLabel.position.y - 50
         
-        shootLabel.zPosition = 2
-        addChild(shootLabel)
+            shootLabel.zPosition = 2
+            addChild(shootLabel)
+        }
         
         
         screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6), strokeColor: SKColor.clear)
@@ -300,13 +315,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         if(GameData.level >= 4){
             //Endless start
             chunkCount += 1
-            var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks)
+            var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
             for i in 0 ..< level.count{
                 addChild(level[i])
             }
         }
         else{
-            var level:[RectangleSprite] = levelManager.loadMap(map: levelManager.getLevelAtIndex(index: GameData.level))
+            var level:[RectangleSprite] = levelManager.loadMap(map: levelManager.getLevelAtIndex(index: GameData.level, avoidOnly: avoidMode))
             for i in 0 ..< level.count{
                 addChild(level[i])
             }
@@ -350,7 +365,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             
             if offTopCount <= 0 && !finishHasSpawned{
                 chunkCount += 1
-                var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks)
+                var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
                 for i in 0 ..< level.count{
                     addChild(level[i])
                 }
@@ -443,7 +458,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             playerHealth -= 1
             if(playerHealth <= 0)
             {
-                sceneManager.loadGameOverScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
+                sceneManager.loadGameOverScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, avoidance: self.avoidMode, msg: ""))
             }
             else{
                 let wallNode = firstBody.node as! RectangleSprite
@@ -454,7 +469,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         //Player Colliding with Finish Line
         if((firstBody.categoryBitMask == CollisionMask.player) && (secondBody.categoryBitMask == CollisionMask.finish)){
             GameData.level += 1
-            sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, msg: ""))
+            sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, avoidance: self.avoidMode, msg: ""))
         }
     }
     
@@ -465,7 +480,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         arrayOfPlayers=arrayOfPlayers.filter(){$0.isPlaying}
         
         if spritesMoving {
-            moveSprites(dt: CGFloat(dt))
+            if(avoidMode){
+                speedTimer += dt
+                moveSprites(dt: CGFloat(dt * (speedTimer / 30)))
+            }
+            else{
+                moveSprites(dt: CGFloat(dt))
+            }
             if spritesMoving{
                 obstacleSpawnTimer = obstacleSpawnTimer - dt
                 if(obstacleSpawnTimer <= 0)

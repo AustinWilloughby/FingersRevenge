@@ -12,11 +12,13 @@ class LevelResults{
     let levelNum:Int
     let levelScore:Int
     let totalScore:Int
+    let avoidanceMode:Bool
     let msg:String
-    init(levelNum:Int, levelScore:Int, totalScore:Int, msg:String){
+    init(levelNum:Int, levelScore:Int, totalScore:Int, avoidance:Bool, msg:String){
         self.levelNum = levelNum
         self.levelScore = levelScore
         self.totalScore = totalScore
         self.msg = msg
+        self.avoidanceMode = avoidance
     }
 }
