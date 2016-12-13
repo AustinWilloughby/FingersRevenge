@@ -12,6 +12,7 @@ class GameOverScene: SKScene {
     let sceneManager:GameViewController
     let results:LevelResults
     let button:SKLabelNode = SKLabelNode(fontNamed: GameData.font.mainFont)
+    let audioNode:SKNode = SKNode()
     
     // MARK: - Initialization -
     init(size: CGSize, scaleMode:SKSceneScaleMode, results: LevelResults,sceneManager:GameViewController) {
@@ -48,13 +49,16 @@ class GameOverScene: SKScene {
         label4.position = CGPoint(x:size.width/2, y:size.height/2 - 400)
         addChild(label4)
         
+        self.addChild(audioNode)
+        audioNode.run(SKAction.playSoundFileNamed("DeathSound.mp3", waitForCompletion: false))
+        
     }
     
     
     // MARK: - Events -
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        sceneManager.loadHomeScene()
-        
+        audioNode.run(SKAction.playSoundFileNamed("Ding.mp3", waitForCompletion: true))
+        sceneManager.loadHomeScene()  
     }
 }
 

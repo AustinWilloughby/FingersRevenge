@@ -28,9 +28,9 @@ class GameViewController: UIViewController {
         playBackgroundMusic(filename: "BackgroundMusic.mp3")
         
         //debug stuff
-        skView.ignoresSiblingOrder = true
-        skView.showsFPS = showDebugData
-        skView.showsNodeCount = showDebugData
+        //skView.ignoresSiblingOrder = true
+        //skView.showsFPS = showDebugData
+        //skView.showsNodeCount = showDebugData
         //skView.showsPhysics = true
     }
     

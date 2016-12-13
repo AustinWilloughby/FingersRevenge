@@ -31,7 +31,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     
     var lastUpdateTime: TimeInterval = 0
     var dt: TimeInterval = 0
-    var speedTimer: TimeInterval = 30
+    var levelTimer: TimeInterval = 0 //Tracks how long the level has been going
+    var speedInterval: TimeInterval = 60 //How long until the speed is 2x what it was last interval
     var spritesMoving = true
     
     //obstacle spawning ivars
@@ -55,6 +56,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var maxChunks:Int = 20
     
     var avoidMode:Bool = true
+    
+    var audioNode: SKNode = SKNode()
     
     var healthBar:SKSpriteNode = SKSpriteNode(texture: SKTexture(image: #imageLiteral(resourceName: "ThreeHealth")))
     
@@ -157,8 +160,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                     let actionMoveDone = SKAction.removeFromParent()
                     s.run(SKAction.sequence([actionMove, actionMoveDone]))
                     self.levelScore -= 1
-                
-                    playNailClip()
+                    //playSFX(fileName: "nailClip.mp3")
+                    audioNode.run(SKAction.playSoundFileNamed("nailClip.mp3", waitForCompletion: false))
                 }
             }
         }
@@ -198,10 +201,14 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     override func didMove(to view: SKView){
         setupUI()
         
+        self.addChild(audioNode)
         //Set up everything on the screen
         tap = UITapGestureRecognizer(target: self, action: #selector(tapDetected))
         tap.delegate = self
         
+        maxChunks = Int(randRange(lower: 25, upper: 45))
+        
+        levelTimer = speedInterval //So that we start at speed of 1
         
         pan = UIPanGestureRecognizer(target: self, action: #selector(panDetected))
         pan.delegate = self
@@ -432,6 +439,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 let projectileNode = secondBody.node as! ProjectileSprite
                 if(!projectileNode.hit)
                 {
+                    audioNode.run(SKAction.playSoundFileNamed("Gate.mp3", waitForCompletion: false))
                     rectangleNode.destroyGates()
                     rectangleNode.takeDamage()
                     rectangleNode.takeDamage()
@@ -461,6 +469,15 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 sceneManager.loadGameOverScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, avoidance: self.avoidMode, msg: ""))
             }
             else{
+                let chance:Int = Int(randRange(lower: 0, upper: 50))
+                switch chance {
+                    case 0...24:
+                        audioNode.run(SKAction.playSoundFileNamed("Hurt1.mp3", waitForCompletion: false))
+                    case 25...49:
+                        audioNode.run(SKAction.playSoundFileNamed("Hurt2.mp3", waitForCompletion: false))
+                    default:
+                        audioNode.run(SKAction.playSoundFileNamed("Oww.mp3", waitForCompletion: false))
+                }
                 let wallNode = firstBody.node as! RectangleSprite
                 wallNode.removeFromParent()
             }
@@ -477,12 +494,12 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     // MARK: - Game Loop -
     override func update(_ currentTime: TimeInterval){
         calculateDeltaTime(currentTime: currentTime)
-        arrayOfPlayers=arrayOfPlayers.filter(){$0.isPlaying}
+        //arrayOfPlayers=arrayOfPlayers.filter(){$0.isPlaying}
         
         if spritesMoving {
             if(avoidMode){
-                speedTimer += dt
-                moveSprites(dt: CGFloat(dt * (speedTimer / 30)))
+                levelTimer += dt
+                moveSprites(dt: CGFloat(dt * (levelTimer / speedInterval)))
             }
             else{
                 moveSprites(dt: CGFloat(dt))

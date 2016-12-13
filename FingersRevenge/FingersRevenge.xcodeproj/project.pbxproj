@@ -20,6 +20,14 @@
 		3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F1427BA1D918D450032A1B1 /* LaunchScreen.storyboard */; };
 		3F223F331D988A9F00434A39 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F223F321D988A9F00434A39 /* PlayerSprite.swift */; };
 		3F2576771DFF4AE1006CE71D /* pixelation.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 3F2576761DFF4AE1006CE71D /* pixelation.fsh */; };
+		3F2576801DFF710F006CE71D /* DeathSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F2576781DFF710F006CE71D /* DeathSound.mp3 */; };
+		3F2576811DFF710F006CE71D /* Ding.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F2576791DFF710F006CE71D /* Ding.mp3 */; };
+		3F2576821DFF710F006CE71D /* Gate.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767A1DFF710F006CE71D /* Gate.mp3 */; };
+		3F2576831DFF710F006CE71D /* Hurt1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767B1DFF710F006CE71D /* Hurt1.mp3 */; };
+		3F2576841DFF710F006CE71D /* Hurt2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767C1DFF710F006CE71D /* Hurt2.mp3 */; };
+		3F2576851DFF710F006CE71D /* Oww.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767D1DFF710F006CE71D /* Oww.mp3 */; };
+		3F2576861DFF710F006CE71D /* Pickup.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767E1DFF710F006CE71D /* Pickup.mp3 */; };
+		3F2576871DFF710F006CE71D /* Victory.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767F1DFF710F006CE71D /* Victory.mp3 */; };
 		3F5AC85A1D9498F800835E0F /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8561D9498F800835E0F /* CGFloat+Extensions.swift */; };
 		3F5AC85B1D9498F800835E0F /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8571D9498F800835E0F /* CGPoint+Extensions.swift */; };
 		3F5AC85C1D9498F800835E0F /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8581D9498F800835E0F /* GameData.swift */; };
@@ -53,6 +61,14 @@
 		3F1427BD1D918D450032A1B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F223F321D988A9F00434A39 /* PlayerSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		3F2576761DFF4AE1006CE71D /* pixelation.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = pixelation.fsh; sourceTree = "<group>"; };
+		3F2576781DFF710F006CE71D /* DeathSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = DeathSound.mp3; sourceTree = "<group>"; };
+		3F2576791DFF710F006CE71D /* Ding.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Ding.mp3; sourceTree = "<group>"; };
+		3F25767A1DFF710F006CE71D /* Gate.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Gate.mp3; sourceTree = "<group>"; };
+		3F25767B1DFF710F006CE71D /* Hurt1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Hurt1.mp3; sourceTree = "<group>"; };
+		3F25767C1DFF710F006CE71D /* Hurt2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Hurt2.mp3; sourceTree = "<group>"; };
+		3F25767D1DFF710F006CE71D /* Oww.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Oww.mp3; sourceTree = "<group>"; };
+		3F25767E1DFF710F006CE71D /* Pickup.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Pickup.mp3; sourceTree = "<group>"; };
+		3F25767F1DFF710F006CE71D /* Victory.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Victory.mp3; sourceTree = "<group>"; };
 		3F5AC8561D9498F800835E0F /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		3F5AC8571D9498F800835E0F /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		3F5AC8581D9498F800835E0F /* GameData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
@@ -117,6 +133,14 @@
 				3F1427BD1D918D450032A1B1 /* Info.plist */,
 				3FAE97CE1DB589A500C62A03 /* nailClip.mp3 */,
 				3F030ED21DB564390099868B /* BackgroundMusic.mp3 */,
+				3F2576781DFF710F006CE71D /* DeathSound.mp3 */,
+				3F2576791DFF710F006CE71D /* Ding.mp3 */,
+				3F25767A1DFF710F006CE71D /* Gate.mp3 */,
+				3F25767B1DFF710F006CE71D /* Hurt1.mp3 */,
+				3F25767C1DFF710F006CE71D /* Hurt2.mp3 */,
+				3F25767D1DFF710F006CE71D /* Oww.mp3 */,
+				3F25767E1DFF710F006CE71D /* Pickup.mp3 */,
+				3F25767F1DFF710F006CE71D /* Victory.mp3 */,
 			);
 			path = FingersRevenge;
 			sourceTree = "<group>";
@@ -241,16 +265,24 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F2576811DFF710F006CE71D /* Ding.mp3 in Resources */,
 				3F1427B71D918D450032A1B1 /* Main.storyboard in Resources */,
+				3F2576851DFF710F006CE71D /* Oww.mp3 in Resources */,
 				3F1427AE1D918D450032A1B1 /* GameScene.sks in Resources */,
 				3FAE97CF1DB589A500C62A03 /* nailClip.mp3 in Resources */,
+				3F2576871DFF710F006CE71D /* Victory.mp3 in Resources */,
+				3F2576801DFF710F006CE71D /* DeathSound.mp3 in Resources */,
 				3F030ED31DB564390099868B /* BackgroundMusic.mp3 in Resources */,
 				3F2576771DFF4AE1006CE71D /* pixelation.fsh in Resources */,
 				3F1427B91D918D450032A1B1 /* Assets.xcassets in Resources */,
 				3FF476BF1DA19E2500D87D5E /* spark.png in Resources */,
 				3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */,
+				3F2576821DFF710F006CE71D /* Gate.mp3 in Resources */,
+				3F2576841DFF710F006CE71D /* Hurt2.mp3 in Resources */,
 				3FF476BE1DA19E2500D87D5E /* FingerParticle.sks in Resources */,
+				3F2576861DFF710F006CE71D /* Pickup.mp3 in Resources */,
 				3F1427B01D918D450032A1B1 /* Actions.sks in Resources */,
+				3F2576831DFF710F006CE71D /* Hurt1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

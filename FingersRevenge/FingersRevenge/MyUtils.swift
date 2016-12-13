@@ -119,3 +119,8 @@ extension CGVector {
     }
 }
 
+//Generate random number
+func randRange (lower: UInt32 , upper: UInt32) -> UInt32 {
+    return lower + arc4random_uniform(upper - lower + 1)
+}
+

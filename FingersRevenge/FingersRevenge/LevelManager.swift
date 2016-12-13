@@ -159,7 +159,7 @@ class LevelManager{
     func randomGreenColor() -> SKColor{
         var h:CGFloat, s:CGFloat, l:CGFloat
         let hRange:CGFloat = 140.0 - 90.0
-        let sRange:CGFloat = 100.0 - 50.0
+        //let sRange:CGFloat = 100.0 - 50.0
         let lRange:CGFloat = 60.0 - 40.0
         h = (90.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * hRange)))/3.6/100.0
         //        s = (50.0 + CGFloat(((CGFloat(arc4random_uniform(101))/100.0) * sRange)))/100.0

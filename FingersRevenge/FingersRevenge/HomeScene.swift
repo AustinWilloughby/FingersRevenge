@@ -14,6 +14,7 @@ class HomeScene: SKScene {
     let button:SKLabelNode = SKLabelNode(fontNamed: GameData.font.mainFont)
     let classicButton: RectangleSprite = RectangleSprite(size: CGSize(width: 700, height: 200 ), fillColor: SKColor.white, strokeColor: SKColor.black)
     let avoidButton: RectangleSprite = RectangleSprite(size: CGSize(width: 700, height: 200), fillColor: SKColor.white, strokeColor: SKColor.black)
+    let audioNode:SKNode = SKNode()
     
     
     // MARK: - Initialization -
@@ -71,6 +72,8 @@ class HomeScene: SKScene {
         label5.position = CGPoint(x:size.width/2, y:size.height/2 - 600)
         addChild(label5)
         
+        self.addChild(audioNode)
+        
 //        var s:DiamondSprite;
 //        s = DiamondSprite(size: CGSize(width: 100, height: 100), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
 //        s.position = CGPoint(x: size.width/2, y:size.height/2 - 300)
@@ -83,9 +86,11 @@ class HomeScene: SKScene {
         let touch = touches.first!
         
         if classicButton.contains(touch.location(in: self)){
+            audioNode.run(SKAction.playSoundFileNamed("Ding.mp3", waitForCompletion: true))
             sceneManager.loadGameScene(levelNum: 1, totalScore: 0, avoidMode: false)
         }
         else if avoidButton.contains(touch.location(in: self)){
+            audioNode.run(SKAction.playSoundFileNamed("Ding.mp3", waitForCompletion: true))
             sceneManager.loadGameScene(levelNum: 1, totalScore: 0, avoidMode: true)
         }
     }

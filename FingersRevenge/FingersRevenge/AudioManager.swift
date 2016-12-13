@@ -10,9 +10,9 @@
 //
 
 import AVFoundation
+import SpriteKit
 
 var backgroundMusicPlayer = AVAudioPlayer()
-var arrayOfPlayers: [AVAudioPlayer] = [AVAudioPlayer]()
 
 //Play background audio
 func playBackgroundMusic(filename: String){
@@ -24,31 +24,11 @@ func playBackgroundMusic(filename: String){
     
     do{
         backgroundMusicPlayer = try AVAudioPlayer(contentsOf: newURL)
+        backgroundMusicPlayer.volume = 0.70
         backgroundMusicPlayer.numberOfLoops = -1
         backgroundMusicPlayer.prepareToPlay()
         backgroundMusicPlayer.play()
     } catch let error as NSError {
-        print(error.description)
-    }
-}
-
-//Play nail clip audio
-func playNailClip(){
-    let fx = Bundle.main.url(forResource: "nailClip.mp3", withExtension: nil)
-    
-    guard let newURL = fx else{
-        print("failed to load nail fx")
-        return
-    }
-    
-    do{
-        try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-        try AVAudioSession.sharedInstance().setActive(true)
-        let audioPlayer = try AVAudioPlayer(contentsOf: newURL)
-        arrayOfPlayers.append(audioPlayer)
-        arrayOfPlayers.last?.prepareToPlay()
-        arrayOfPlayers.last?.play()
-    } catch let error as NSError{
         print(error.description)
     }
 }

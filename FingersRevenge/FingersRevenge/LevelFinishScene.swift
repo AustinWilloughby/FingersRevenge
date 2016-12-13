@@ -13,6 +13,7 @@ class LevelFinishScene: SKScene {
     let sceneManager:GameViewController
     let results:LevelResults
     let button:SKLabelNode = SKLabelNode(fontNamed: GameData.font.mainFont)
+    let audioNode:SKNode = SKNode()
     
     // MARK: - Initialization -
     init(size: CGSize, scaleMode:SKSceneScaleMode, results: LevelResults,sceneManager:GameViewController) {
@@ -56,14 +57,15 @@ class LevelFinishScene: SKScene {
         addChild(label4)
         
         
-        
+        self.addChild(audioNode)
+        audioNode.run(SKAction.playSoundFileNamed("Victory.mp3", waitForCompletion: false))
         
     }
     
     
     // MARK: - Events -
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        audioNode.run(SKAction.playSoundFileNamed("Ding.mp3", waitForCompletion: true))
         sceneManager.loadGameScene(levelNum: results.levelNum + 1, totalScore: results.totalScore, avoidMode: results.avoidanceMode)
-        
     }
 }
