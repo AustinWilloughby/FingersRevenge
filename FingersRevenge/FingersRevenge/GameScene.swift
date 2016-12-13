@@ -48,6 +48,8 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     var endlessChunkOffset:CGFloat = 50.0
     var finishHasSpawned: Bool = false
     
+    var finishLabel:SKLabelNode = SKLabelNode(fontNamed: GameData.font.mainFont)
+    
     private var shaders = [SKShader]()
     private var shaderTitles = [String]()
     var shaderIndex:Int = 0
@@ -232,7 +234,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
         playerSprite.physicsBody?.isDynamic = true
         playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
-        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.unbreakable
+        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.unbreakable | CollisionMask.ring
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         
         addChild(playerSprite)
@@ -250,19 +252,23 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         pauseLabel.zPosition = 2
         addChild(pauseLabel)
         
+        shootLabel.fontColor = SKColor.lightGray
+        shootLabel.fontSize = GameData.hud.fontSize * 0.9
+        
+        shootLabel.verticalAlignmentMode = .center
+        shootLabel.horizontalAlignmentMode = .center
         if avoidMode == false {
-            shootLabel.fontColor = SKColor.lightGray
-            shootLabel.fontSize = GameData.hud.fontSize * 0.9
-        
-            shootLabel.verticalAlignmentMode = .center
-            shootLabel.horizontalAlignmentMode = .center
             shootLabel.text = "Tap With Second Finger to Shoot"
-            shootLabel.position = playerSprite.position
-            shootLabel.position.y = pauseLabel.position.y - 50
-        
-            shootLabel.zPosition = 2
-            addChild(shootLabel)
         }
+        else{
+            shootLabel.text = "Collect Rings For Bonus Points"
+        }
+        shootLabel.position = playerSprite.position
+        shootLabel.position.y = pauseLabel.position.y - 50
+        
+        shootLabel.zPosition = 2
+        addChild(shootLabel)
+        
         
         
         screenBlocker = RectangleSprite(size: playableRect.size, fillColor: SKColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.6), strokeColor: SKColor.clear)
@@ -319,16 +325,16 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         addChild(scoreLabel)
         
         //If the game is stil progressing, load the right level. Otherwise start the first chunk of endless
-        if(GameData.level >= 4){
+        if(levelNum >= 4){
             //Endless start
             chunkCount += 1
-            var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
+            var level:[SKShapeNode] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
             for i in 0 ..< level.count{
                 addChild(level[i])
             }
         }
         else{
-            var level:[RectangleSprite] = levelManager.loadMap(map: levelManager.getLevelAtIndex(index: GameData.level, avoidOnly: avoidMode))
+            var level:[SKShapeNode] = levelManager.loadMap(map: levelManager.getLevelAtIndex(index: levelNum, avoidOnly: avoidMode))
             for i in 0 ..< level.count{
                 addChild(level[i])
             }
@@ -365,14 +371,34 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 {
                     offTopCount += 1
                 }
-                if o.elementID == "F"{
-                    self.finishHasSpawned = true
+                if o.elementID == "L"{
+                    //If the finish just spawned
+                    if self.finishHasSpawned == false {
+                        self.finishHasSpawned = true
+                        self.finishLabel.verticalAlignmentMode = .center
+                        self.finishLabel.horizontalAlignmentMode = .center
+                        self.finishLabel.text = "F  i  n  i  s  h"
+                        self.finishLabel.fontColor = UIColor.black
+                        self.finishLabel.fontSize = 90
+                        self.finishLabel.position = CGPoint(x:self.size.width/2, y:o.position.y)
+                        self.addChild(self.finishLabel)
+                    }
+                        //Subsequent frames
+                    else{
+                        self.finishLabel.position = CGPoint(x:self.size.width/2, y:o.position.y)
+                    }
                 }
+            })
+            
+            enumerateChildNodes(withName: "ring", using:{
+                node, stop in
+                let r = node as! RingSprite
+                r.update(dt: dt)
             })
             
             if offTopCount <= 0 && !finishHasSpawned{
                 chunkCount += 1
-                var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
+                var level:[SKShapeNode] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
                 for i in 0 ..< level.count{
                     addChild(level[i])
                 }
@@ -462,7 +488,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         //Player collides with obstacles
         if((firstBody.categoryBitMask == CollisionMask.wall || firstBody.categoryBitMask == CollisionMask.gate || firstBody.categoryBitMask == CollisionMask.unbreakable) && (secondBody.categoryBitMask == CollisionMask.player)){
-            
+            if(firstBody.node != nil)
+            {
+                if let emit = SKEmitterNode(fileNamed:"Hurt.sks"){
+                    emit.position = (firstBody.node?.position)!
+                    addChild(emit)
+                }
+            }
             playerHealth -= 1
             if(playerHealth <= 0)
             {
@@ -483,9 +515,23 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             }
         }
         
+        if((firstBody.categoryBitMask == CollisionMask.ring) && (secondBody.categoryBitMask == CollisionMask.player))
+        {
+            if firstBody.node != nil && secondBody.node != nil{
+                if let emit = SKEmitterNode(fileNamed:"GoldGet.sks"){
+                    emit.position = (firstBody.node?.position)!
+                    addChild(emit)
+                }
+                let ringNode = firstBody.node as! RingSprite
+                levelScore += 200
+                ringNode.pickUp()
+                audioNode.run(SKAction.playSoundFileNamed("Pickup.mp3", waitForCompletion: false))
+            }
+            
+        }
+        
         //Player Colliding with Finish Line
         if((firstBody.categoryBitMask == CollisionMask.player) && (secondBody.categoryBitMask == CollisionMask.finish)){
-            GameData.level += 1
             sceneManager.loadLevelFinishScene(results: LevelResults(levelNum: self.levelNum, levelScore: self.levelScore, totalScore: self.totalScore, avoidance: self.avoidMode, msg: ""))
         }
     }
@@ -494,7 +540,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
     // MARK: - Game Loop -
     override func update(_ currentTime: TimeInterval){
         calculateDeltaTime(currentTime: currentTime)
-        //arrayOfPlayers=arrayOfPlayers.filter(){$0.isPlaying}
         
         if spritesMoving {
             if(avoidMode){
@@ -532,7 +577,6 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
             let spriteSize = vector_float2(Float(background.frame.size.width),Float(background.frame.size.height))
             currentShader.uniforms = [SKUniform(name: "u_sprite_size", vectorFloat2: spriteSize)]
             (background as! SKSpriteNode).shader = currentShader
-            print("if let succeeded")
         }
         
         //let frame = self.frame

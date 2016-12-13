@@ -49,9 +49,11 @@ class HomeScene: SKScene {
         addChild(label2)
         
         classicButton.position = CGPoint(x: size.width/2, y: size.height/2 - 250)
+        classicButton.lineWidth = 10
         addChild(classicButton)
         
         avoidButton.position = CGPoint(x: size.width/2, y: size.height/2 - 600)
+        avoidButton.lineWidth = 10
         addChild(avoidButton)
         
         let label4 = SKLabelNode(fontNamed: GameData.font.mainFont)
@@ -73,11 +75,6 @@ class HomeScene: SKScene {
         addChild(label5)
         
         self.addChild(audioNode)
-        
-//        var s:DiamondSprite;
-//        s = DiamondSprite(size: CGSize(width: 100, height: 100), lineWeight: 10, strokeColor: SKColor.white, fillColor: SKColor.lightGray)
-//        s.position = CGPoint(x: size.width/2, y:size.height/2 - 300)
-//        addChild(s)
         
         
     }

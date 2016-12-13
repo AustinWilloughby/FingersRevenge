@@ -36,17 +36,17 @@ func getPlayableRectPhonePortrait(size:CGSize)->CGRect{
     // ex. iPad Pro (12.9 inch) is 1024 x 1366 == 0.75 aspect ratio
     
     // This is for illustrative purposes - uncomment to see the values in the console
-    print("----------------")
-    print("Device model = \(getDeviceModel())")
-    print("System version = \(getSystemNameAndVersion())")
-    print("Is iPhone? = \(isIphone())")
-    print("Screen rect in pixels = \(getScreenRectInPixels())")
-    print("Screen rect in points = \(getScreenRectInPoints())")
-    print("Screen scale factor = \(getScreenPhysicalScale())")
-    print("Screen portrait aspect ratio = \(getScreenPhysicalAspectRatioPortrait())")
-    print("*Scene* portrait aspect ratio = \(size.width/size.height)")
-    print("*Scene* rect in points (is always this on every device) = \(size)")
-    print("----------------")
+//    print("----------------")
+//    print("Device model = \(getDeviceModel())")
+//    print("System version = \(getSystemNameAndVersion())")
+//    print("Is iPhone? = \(isIphone())")
+//    print("Screen rect in pixels = \(getScreenRectInPixels())")
+//    print("Screen rect in points = \(getScreenRectInPoints())")
+//    print("Screen scale factor = \(getScreenPhysicalScale())")
+//    print("Screen portrait aspect ratio = \(getScreenPhysicalAspectRatioPortrait())")
+//    print("*Scene* portrait aspect ratio = \(size.width/size.height)")
+//    print("*Scene* rect in points (is always this on every device) = \(size)")
+//    print("----------------")
     //
     
     // Here the *scene* aspect ration is always 0.5625
@@ -63,8 +63,8 @@ func getPlayableRectPhonePortrait(size:CGSize)->CGRect{
     // create the playable rect
     let playableRect = CGRect(x: 0, y: playableMargin, width: size.width, height: playableHeight)
     
-    print("playableRect = \(playableRect)")
-    print("We cropped  = \(playableMargin) off the top and bottom of the scene")
+    //print("playableRect = \(playableRect)")
+    //print("We cropped  = \(playableMargin) off the top and bottom of the scene")
     
     return playableRect
 }

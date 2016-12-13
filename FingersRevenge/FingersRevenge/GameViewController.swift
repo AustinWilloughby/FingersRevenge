@@ -26,12 +26,6 @@ class GameViewController: UIViewController {
         loadHomeScene()
         
         playBackgroundMusic(filename: "BackgroundMusic.mp3")
-        
-        //debug stuff
-        //skView.ignoresSiblingOrder = true
-        //skView.showsFPS = showDebugData
-        //skView.showsNodeCount = showDebugData
-        //skView.showsPhysics = true
     }
     
     // MARK: - Scene Management -

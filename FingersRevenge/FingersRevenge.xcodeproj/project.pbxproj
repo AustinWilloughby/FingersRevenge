@@ -28,6 +28,9 @@
 		3F2576851DFF710F006CE71D /* Oww.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767D1DFF710F006CE71D /* Oww.mp3 */; };
 		3F2576861DFF710F006CE71D /* Pickup.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767E1DFF710F006CE71D /* Pickup.mp3 */; };
 		3F2576871DFF710F006CE71D /* Victory.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3F25767F1DFF710F006CE71D /* Victory.mp3 */; };
+		3F25768C1DFF7CA2006CE71D /* GoldGet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F2576891DFF7CA2006CE71D /* GoldGet.sks */; };
+		3F25768D1DFF7CA2006CE71D /* Hurt.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3F25768A1DFF7CA2006CE71D /* Hurt.sks */; };
+		3F25768F1DFF7CB5006CE71D /* RingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F25768E1DFF7CB5006CE71D /* RingSprite.swift */; };
 		3F5AC85A1D9498F800835E0F /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8561D9498F800835E0F /* CGFloat+Extensions.swift */; };
 		3F5AC85B1D9498F800835E0F /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8571D9498F800835E0F /* CGPoint+Extensions.swift */; };
 		3F5AC85C1D9498F800835E0F /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F5AC8581D9498F800835E0F /* GameData.swift */; };
@@ -69,6 +72,9 @@
 		3F25767D1DFF710F006CE71D /* Oww.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Oww.mp3; sourceTree = "<group>"; };
 		3F25767E1DFF710F006CE71D /* Pickup.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Pickup.mp3; sourceTree = "<group>"; };
 		3F25767F1DFF710F006CE71D /* Victory.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Victory.mp3; sourceTree = "<group>"; };
+		3F2576891DFF7CA2006CE71D /* GoldGet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GoldGet.sks; sourceTree = "<group>"; };
+		3F25768A1DFF7CA2006CE71D /* Hurt.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Hurt.sks; sourceTree = "<group>"; };
+		3F25768E1DFF7CB5006CE71D /* RingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingSprite.swift; sourceTree = "<group>"; };
 		3F5AC8561D9498F800835E0F /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		3F5AC8571D9498F800835E0F /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
 		3F5AC8581D9498F800835E0F /* GameData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
@@ -116,21 +122,29 @@
 		3F1427AA1D918D450032A1B1 /* FingersRevenge */ = {
 			isa = PBXGroup;
 			children = (
-				3F5AE51F1DF8CE34004CEC1C /* Shaders */,
 				3F5AC8581D9498F800835E0F /* GameData.swift */,
 				3F1427AB1D918D450032A1B1 /* AppDelegate.swift */,
 				3F5AC8591D9498F800835E0F /* MyUtils.swift */,
 				3F8215F81D946E6A000A0491 /* VC */,
 				3F8215F91D946E70000A0491 /* Scene */,
+				3F5AE51F1DF8CE34004CEC1C /* Shaders */,
 				3F8215FA1D946E79000A0491 /* Sprite */,
 				3F8215FB1D946E7F000A0491 /* Model */,
 				3F8215FC1D946E86000A0491 /* Lib */,
-				3F1427AD1D918D450032A1B1 /* GameScene.sks */,
+				3F2576901DFF81BA006CE71D /* Audio */,
 				3F1427AF1D918D450032A1B1 /* Actions.sks */,
-				3F1427B51D918D450032A1B1 /* Main.storyboard */,
+				3F1427AD1D918D450032A1B1 /* GameScene.sks */,
 				3F1427B81D918D450032A1B1 /* Assets.xcassets */,
+				3F1427B51D918D450032A1B1 /* Main.storyboard */,
 				3F1427BA1D918D450032A1B1 /* LaunchScreen.storyboard */,
 				3F1427BD1D918D450032A1B1 /* Info.plist */,
+			);
+			path = FingersRevenge;
+			sourceTree = "<group>";
+		};
+		3F2576901DFF81BA006CE71D /* Audio */ = {
+			isa = PBXGroup;
+			children = (
 				3FAE97CE1DB589A500C62A03 /* nailClip.mp3 */,
 				3F030ED21DB564390099868B /* BackgroundMusic.mp3 */,
 				3F2576781DFF710F006CE71D /* DeathSound.mp3 */,
@@ -142,7 +156,7 @@
 				3F25767E1DFF710F006CE71D /* Pickup.mp3 */,
 				3F25767F1DFF710F006CE71D /* Victory.mp3 */,
 			);
-			path = FingersRevenge;
+			name = Audio;
 			sourceTree = "<group>";
 		};
 		3F5AE51F1DF8CE34004CEC1C /* Shaders */ = {
@@ -176,10 +190,13 @@
 			isa = PBXGroup;
 			children = (
 				3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */,
+				3F2576891DFF7CA2006CE71D /* GoldGet.sks */,
+				3F25768A1DFF7CA2006CE71D /* Hurt.sks */,
 				3FF476BD1DA19E2500D87D5E /* spark.png */,
 				3F8216071D9479D0000A0491 /* DiamondSprite.swift */,
 				3F030ED61DB570640099868B /* ProjectileSprite.swift */,
 				3F64F89B1D985C470035C17A /* RectangleSprite.swift */,
+				3F25768E1DFF7CB5006CE71D /* RingSprite.swift */,
 				3F223F321D988A9F00434A39 /* PlayerSprite.swift */,
 			);
 			name = Sprite;
@@ -281,7 +298,9 @@
 				3F2576841DFF710F006CE71D /* Hurt2.mp3 in Resources */,
 				3FF476BE1DA19E2500D87D5E /* FingerParticle.sks in Resources */,
 				3F2576861DFF710F006CE71D /* Pickup.mp3 in Resources */,
+				3F25768C1DFF7CA2006CE71D /* GoldGet.sks in Resources */,
 				3F1427B01D918D450032A1B1 /* Actions.sks in Resources */,
+				3F25768D1DFF7CA2006CE71D /* Hurt.sks in Resources */,
 				3F2576831DFF710F006CE71D /* Hurt1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -307,6 +326,7 @@
 				3F5AC85D1D9498F800835E0F /* MyUtils.swift in Sources */,
 				3F5AC8631D94A24700835E0F /* LevelResults.swift in Sources */,
 				3F030ED71DB570640099868B /* ProjectileSprite.swift in Sources */,
+				3F25768F1DFF7CB5006CE71D /* RingSprite.swift in Sources */,
 				3F1427B41D918D450032A1B1 /* GameViewController.swift in Sources */,
 				3F5AC85C1D9498F800835E0F /* GameData.swift in Sources */,
 				3F5AC85A1D9498F800835E0F /* CGFloat+Extensions.swift in Sources */,
