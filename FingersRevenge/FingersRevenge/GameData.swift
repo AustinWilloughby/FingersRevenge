@@ -46,8 +46,9 @@ struct CollisionMask {
     static let unbreakable  : UInt32 = 0b10
     static let gate         : UInt32 = 0b100
     static let button       : UInt32 = 0b1000
-    static let player       : UInt32 = 0b10000
-    static let projectile   : UInt32 = 0b100000
-    static let finish       : UInt32 = 0b1000000
+    static let ring         : UInt32 = 0b10000
+    static let player       : UInt32 = 0b100000
+    static let projectile   : UInt32 = 0b1000000
+    static let finish       : UInt32 = 0b10000000
 }
 

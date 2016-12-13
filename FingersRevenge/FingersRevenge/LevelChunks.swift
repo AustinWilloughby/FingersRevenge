@@ -349,7 +349,7 @@ struct LevelChunks{
             "----------",
             "--O----O--",
             "-O------O-",
-            "O--------O"
+            "O---R----O"
     ]
     
     static let aTwo:[String] =

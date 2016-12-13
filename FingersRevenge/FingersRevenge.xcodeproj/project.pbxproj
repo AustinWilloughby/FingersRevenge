@@ -32,6 +32,9 @@
 		3F8216081D9479D0000A0491 /* DiamondSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F8216071D9479D0000A0491 /* DiamondSprite.swift */; };
 		3F9DE6051DA33ACB00F3E48F /* LevelChunks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */; };
 		3F9DE6061DA33ACB00F3E48F /* LevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */; };
+		3FA842AD1DFF5F8400730E7C /* RingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FA842AC1DFF5F8400730E7C /* RingSprite.swift */; };
+		3FA842B01DFF712F00730E7C /* GoldGet.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3FA842AF1DFF712F00730E7C /* GoldGet.sks */; };
+		3FA842B21DFF71CF00730E7C /* Hurt.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3FA842B11DFF71CF00730E7C /* Hurt.sks */; };
 		3FAE97CF1DB589A500C62A03 /* nailClip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3FAE97CE1DB589A500C62A03 /* nailClip.mp3 */; };
 		3FF476BE1DA19E2500D87D5E /* FingerParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */; };
 		3FF476BF1DA19E2500D87D5E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 3FF476BD1DA19E2500D87D5E /* spark.png */; };
@@ -65,6 +68,9 @@
 		3F8216071D9479D0000A0491 /* DiamondSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiamondSprite.swift; sourceTree = "<group>"; };
 		3F9DE6031DA33ACB00F3E48F /* LevelChunks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelChunks.swift; sourceTree = "<group>"; };
 		3F9DE6041DA33ACB00F3E48F /* LevelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelManager.swift; sourceTree = "<group>"; };
+		3FA842AC1DFF5F8400730E7C /* RingSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingSprite.swift; sourceTree = "<group>"; };
+		3FA842AF1DFF712F00730E7C /* GoldGet.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GoldGet.sks; sourceTree = "<group>"; };
+		3FA842B11DFF71CF00730E7C /* Hurt.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Hurt.sks; sourceTree = "<group>"; };
 		3FAE97CE1DB589A500C62A03 /* nailClip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = nailClip.mp3; sourceTree = "<group>"; };
 		3FF476BC1DA19E2500D87D5E /* FingerParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FingerParticle.sks; sourceTree = "<group>"; };
 		3FF476BD1DA19E2500D87D5E /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
@@ -100,6 +106,7 @@
 		3F1427AA1D918D450032A1B1 /* FingersRevenge */ = {
 			isa = PBXGroup;
 			children = (
+				3FA842AE1DFF711400730E7C /* Particles */,
 				3F5AE51F1DF8CE34004CEC1C /* Shaders */,
 				3F5AC8581D9498F800835E0F /* GameData.swift */,
 				3F1427AB1D918D450032A1B1 /* AppDelegate.swift */,
@@ -157,6 +164,7 @@
 				3F030ED61DB570640099868B /* ProjectileSprite.swift */,
 				3F64F89B1D985C470035C17A /* RectangleSprite.swift */,
 				3F223F321D988A9F00434A39 /* PlayerSprite.swift */,
+				3FA842AC1DFF5F8400730E7C /* RingSprite.swift */,
 			);
 			name = Sprite;
 			sourceTree = "<group>";
@@ -179,6 +187,15 @@
 				3F5AC8571D9498F800835E0F /* CGPoint+Extensions.swift */,
 			);
 			name = Lib;
+			sourceTree = "<group>";
+		};
+		3FA842AE1DFF711400730E7C /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				3FA842AF1DFF712F00730E7C /* GoldGet.sks */,
+				3FA842B11DFF71CF00730E7C /* Hurt.sks */,
+			);
+			name = Particles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -213,7 +230,7 @@
 				TargetAttributes = {
 					3F1427A71D918D440032A1B1 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = P5F2W7RU5W;
+						DevelopmentTeam = V3GKW447FR;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -244,8 +261,10 @@
 				3F1427B71D918D450032A1B1 /* Main.storyboard in Resources */,
 				3F1427AE1D918D450032A1B1 /* GameScene.sks in Resources */,
 				3FAE97CF1DB589A500C62A03 /* nailClip.mp3 in Resources */,
+				3FA842B01DFF712F00730E7C /* GoldGet.sks in Resources */,
 				3F030ED31DB564390099868B /* BackgroundMusic.mp3 in Resources */,
 				3F2576771DFF4AE1006CE71D /* pixelation.fsh in Resources */,
+				3FA842B21DFF71CF00730E7C /* Hurt.sks in Resources */,
 				3F1427B91D918D450032A1B1 /* Assets.xcassets in Resources */,
 				3FF476BF1DA19E2500D87D5E /* spark.png in Resources */,
 				3F1427BC1D918D450032A1B1 /* LaunchScreen.storyboard in Resources */,
@@ -275,6 +294,7 @@
 				3F5AC85D1D9498F800835E0F /* MyUtils.swift in Sources */,
 				3F5AC8631D94A24700835E0F /* LevelResults.swift in Sources */,
 				3F030ED71DB570640099868B /* ProjectileSprite.swift in Sources */,
+				3FA842AD1DFF5F8400730E7C /* RingSprite.swift in Sources */,
 				3F1427B41D918D450032A1B1 /* GameViewController.swift in Sources */,
 				3F5AC85C1D9498F800835E0F /* GameData.swift in Sources */,
 				3F5AC85A1D9498F800835E0F /* CGFloat+Extensions.swift in Sources */,
@@ -401,11 +421,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = P5F2W7RU5W;
+				DEVELOPMENT_TEAM = V3GKW447FR;
 				INFOPLIST_FILE = FingersRevenge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sideloadfinger.FingersRevenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -416,11 +436,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = P5F2W7RU5W;
+				DEVELOPMENT_TEAM = V3GKW447FR;
 				INFOPLIST_FILE = FingersRevenge/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.finger.FingersRevenge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sideloadfinger.FingersRevenge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;

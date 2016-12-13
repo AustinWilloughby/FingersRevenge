@@ -225,7 +225,7 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         }
         playerSprite.physicsBody?.isDynamic = true
         playerSprite.physicsBody?.categoryBitMask = CollisionMask.player
-        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.unbreakable
+        playerSprite.physicsBody?.contactTestBitMask = CollisionMask.wall | CollisionMask.finish | CollisionMask.gate | CollisionMask.unbreakable | CollisionMask.ring
         playerSprite.physicsBody?.collisionBitMask = CollisionMask.none
         
         addChild(playerSprite)
@@ -315,13 +315,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         if(GameData.level >= 4){
             //Endless start
             chunkCount += 1
-            var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
+            var level:[SKShapeNode] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
             for i in 0 ..< level.count{
                 addChild(level[i])
             }
         }
         else{
-            var level:[RectangleSprite] = levelManager.loadMap(map: levelManager.getLevelAtIndex(index: GameData.level, avoidOnly: avoidMode))
+            var level:[SKShapeNode] = levelManager.loadMap(map: levelManager.getLevelAtIndex(index: GameData.level, avoidOnly: avoidMode))
             for i in 0 ..< level.count{
                 addChild(level[i])
             }
@@ -363,9 +363,15 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 }
             })
             
+            enumerateChildNodes(withName: "ring", using:{
+                node, stop in
+                let r = node as! RingSprite
+                r.update(dt: dt)
+            })
+            
             if offTopCount <= 0 && !finishHasSpawned{
                 chunkCount += 1
-                var level:[RectangleSprite] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
+                var level:[SKShapeNode] = levelManager.randomChunk(currentChunk: chunkCount, endChunk: maxChunks, avoidOnly: avoidMode)
                 for i in 0 ..< level.count{
                     addChild(level[i])
                 }
@@ -454,7 +460,13 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
         
         //Player collides with obstacles
         if((firstBody.categoryBitMask == CollisionMask.wall || firstBody.categoryBitMask == CollisionMask.gate || firstBody.categoryBitMask == CollisionMask.unbreakable) && (secondBody.categoryBitMask == CollisionMask.player)){
-            
+            if(firstBody.node != nil)
+            {
+                if let emit = SKEmitterNode(fileNamed:"Hurt.sks"){
+                    emit.position = (firstBody.node?.position)!
+                    addChild(emit)
+                }
+            }
             playerHealth -= 1
             if(playerHealth <= 0)
             {
@@ -464,6 +476,20 @@ class GameScene: SKScene, UIGestureRecognizerDelegate, SKPhysicsContactDelegate 
                 let wallNode = firstBody.node as! RectangleSprite
                 wallNode.removeFromParent()
             }
+        }
+        
+        if((firstBody.categoryBitMask == CollisionMask.ring) && (secondBody.categoryBitMask == CollisionMask.player))
+        {
+            if firstBody.node != nil && secondBody.node != nil{
+                if let emit = SKEmitterNode(fileNamed:"GoldGet.sks"){
+                    emit.position = (firstBody.node?.position)!
+                    addChild(emit)
+                }
+                let ringNode = firstBody.node as! RingSprite
+                levelScore += 200
+                ringNode.pickUp()
+            }
+            
         }
         
         //Player Colliding with Finish Line

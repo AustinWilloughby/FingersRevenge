@@ -22,14 +22,14 @@ class LevelManager{
     
     
     //Load an array of rectanglesprites from a map identifier
-    func loadMap(map:String)->[RectangleSprite]{
+    func loadMap(map:String)->[SKShapeNode]{
         var chunkMap:[String] = map.characters.split{$0 == ","}.map(String.init)
         
         if chunkMap.last != "E" {
             chunkMap.append("E")
         }
         
-        var chunks = [RectangleSprite]()
+        var chunks = [SKShapeNode]()
         
         
         var currentStartHeight: Int = startHeight
@@ -47,13 +47,13 @@ class LevelManager{
     
     
     //Load a chunk from a map string[], give starting height to know where it is in the world
-    func loadChunk(map:[String], startingHeight: Int)->(newChunk: [RectangleSprite], height: Int){
+    func loadChunk(map:[String], startingHeight: Int)->(newChunk: [SKShapeNode], height: Int){
         var currentLine = map[0]
         let xSize: Int = tilesAcross
         let ySize: Int = map.count
         var button:RectangleSprite?
         var gates:[RectangleSprite] = [RectangleSprite]()
-        var chunk = [RectangleSprite]()
+        var chunk = [SKShapeNode]()
         
         for y in 0 ..< ySize{
             currentLine = map[ySize - y - 1]
@@ -90,6 +90,16 @@ class LevelManager{
                     case "U": //Unbreakable rects
                         tempRect = generateRectDetails(fill: randomDarkGrayColor(), stroke: SKColor.clear, name: "obstacle", xValue: x, yValue: y, startHeight: startingHeight, elementID: "U")
                         chunk.append(tempRect)
+                    
+                    case "R": //Rings
+                        let tempRing = RingSprite(size: CGSize(width: unitSize, height: unitSize))
+                        tempRing.position = CGPoint(x: (x * unitSize) + (unitSize / 2), y:startingHeight + (y * unitSize))
+                        tempRing.physicsBody = SKPhysicsBody.init(polygonFrom: tempRing.path!)
+                        tempRing.physicsBody?.isDynamic = false
+                        tempRing.physicsBody?.categoryBitMask = CollisionMask.ring
+                        tempRing.physicsBody?.collisionBitMask = CollisionMask.none
+                        tempRing.name = "ring"
+                        chunk.append(tempRing)
                     
                     default:
                         break
@@ -186,7 +196,7 @@ class LevelManager{
     }
     
     //Get a random chunk back
-    func randomChunk(currentChunk: Int, endChunk: Int, avoidOnly: Bool) -> [RectangleSprite]{
+    func randomChunk(currentChunk: Int, endChunk: Int, avoidOnly: Bool) -> [SKShapeNode]{
         if(currentChunk > endChunk){
             return loadChunk(map: LevelChunks.end, startingHeight: 1920).0
         }
